@@ -1,4 +1,5 @@
 const express = require('express');
+const account = require('../components/Account/network');
 
 const router = express.Router();
 router.get('/', (req, res) => {
@@ -13,6 +14,7 @@ router.get('/', (req, res) => {
 
 const routes = (server) => {
   server.use('/', router);
+  server.use('/account', account);
 };
 
 module.exports = routes;
