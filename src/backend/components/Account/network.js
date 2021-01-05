@@ -15,4 +15,15 @@ router.get('/', (req, res) => {
     });
 });
 
+router.post('/', (req, res) => {
+  const newAccount = controller.createAccount(req.body);
+  newAccount
+    .then((response) => {
+      responseManager.success(res, response.code, response.body);
+    })
+    .catch((response) => {
+      responseManager.fail(res, response.code, response.error);
+    });
+});
+
 module.exports = router;
