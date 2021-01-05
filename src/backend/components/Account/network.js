@@ -1,10 +1,18 @@
 const express = require('express');
+const controller = require('./controller');
 const responseManager = require('../../network/responseManager');
 
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  responseManager.success(res, 200, 'Account list');
+  const account = controller.getAccount();
+  account
+    .then((response) => {
+      responseManager.success(res, response.code, response.body);
+    })
+    .catch((response) => {
+      responseManager.fail(res, response.code, response.error);
+    });
 });
 
 module.exports = router;
