@@ -1,5 +1,16 @@
-const { Validator } = require('node-input-validator');
+const niv = require('node-input-validator');
 const store = require('./store');
+
+niv.extendMessages({
+  identifier: 'The first number of identifer must be less that 5',
+});
+niv.extend('identifier', ({ value, args }) => {
+  const firstNumber = String(value).charAt(0);
+  if (firstNumber <= args[0]) {
+    return true;
+  }
+  return false;
+});
 
 const getAccount = () => {
   return new Promise((resolve, reject) => {
@@ -23,7 +34,7 @@ const getAccount = () => {
 
 const createAccount = ({ identifier, description, level, type, keycontrol, balance }) => {
   return new Promise((resolve, reject) => {
-    const accountValidator = new Validator({
+    const accountValidator = new niv.Validator({
       identifier,
       description,
       level,
@@ -31,11 +42,11 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
       keycontrol,
       balance,
     }, {
-      identifier: 'required|integer|digits:8',
+      identifier: 'required|integer|digits:8|identifier:5',
       description: 'required|string',
-      level: 'required|integer|between:0,6',
-      type: 'required|integer|between:0,3',
-      keycontrol: 'required|integer',
+      level: 'required|integer|between:1,5',
+      type: 'required|integer|between:1,2',
+      keycontrol: 'required|integer|digits:8|identifier:5',
       balance: 'required|accepted:deudor,acredor',
     });
     accountValidator.check()
