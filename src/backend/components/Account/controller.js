@@ -47,7 +47,7 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
       level: 'required|integer|between:1,5',
       type: 'required|integer|between:1,2',
       keycontrol: 'required|integer|digits:8|identifier:5',
-      balance: 'required|accepted:deudor,acredor',
+      balance: 'required|accepted:deudor,acreedor',
     });
     accountValidator.check()
       .then((matched) => {
