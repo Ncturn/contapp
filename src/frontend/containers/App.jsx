@@ -1,9 +1,9 @@
 import React from 'react';
-import Account from '../components/Account';
+import AccountTable from '../components/AccountTable';
 
 const App = () => {
   return (
-    <Account />
+    <AccountTable />
   );
 };
 

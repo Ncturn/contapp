@@ -1,21 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Account = () => {
-  const [greting, setGreting] = useState('');
-
-  const getGreeting = () => {
-    console.log(window.location.hostname);
-    fetch(`http://${window.location.hostname}:3000`)
-      .then((data) => data.json())
-      .then((data) => {
-        setGreting(data.body);
-      });
-  };
-
-  getGreeting();
-
+const Account = (account) => {
+  const { identifier, description, level, type, keycontrol, balance } = account.account;
   return (
-    <div>{greting}</div>
+    <tr>
+      <td>{identifier}</td>
+      <td>{description}</td>
+      <td>{level}</td>
+      <td>{type}</td>
+      <td>{keycontrol}</td>
+      <td>{balance}</td>
+    </tr>
   );
 };
 

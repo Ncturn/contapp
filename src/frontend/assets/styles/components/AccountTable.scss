@@ -1,0 +1,35 @@
+#title {
+  text-align: center;
+  font-family: arial, sans-serif;
+}
+
+#account {
+  text-align: center;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 80%;
+  margin: auto;
+}
+
+#account td,
+#account th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#account tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#account tr:hover {
+  background-color: #ddd;
+}
+
+#account th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4caf50;
+  color: white;
+}
