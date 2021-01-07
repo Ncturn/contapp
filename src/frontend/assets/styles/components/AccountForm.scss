@@ -1,0 +1,49 @@
+form {
+  margin-top: 1em;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3em;
+}
+
+label {
+  display: block;
+  margin: auto;
+  margin-bottom: 0.5em;
+}
+
+input {
+  border-radius: 0.3em;
+  display: block;
+  width: 20em;
+  height: 2em;
+  font-size: 0.9em;
+}
+
+select {
+  display: block;
+  width: 20.5em;
+  height: 2em;
+  font-size: 0.9em;
+}
+
+textarea {
+  display: block;
+  width: 20em;
+  font-size: 0.9em;
+  resize: none;
+}
+
+h1 {
+  margin: auto;
+  margin-bottom: 0.5em;
+}
+
+button {
+  width: 5em;
+  height: 2em;
+  margin: auto;
+  font-size: 0.9em;
+  background-color: #cad2c5;
+  color: #2f3e46;
+}

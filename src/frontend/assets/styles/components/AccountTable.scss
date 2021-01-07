@@ -1,11 +1,9 @@
 #title {
   text-align: center;
-  font-family: arial, sans-serif;
 }
 
 #account {
   text-align: center;
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   border: 3px solid #ddd;
   width: 80%;
@@ -19,17 +17,18 @@
 }
 
 #account tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #52796f;
 }
 
 #account tr:hover {
-  background-color: #ddd;
+  background-color: #cad2c5;
+  color: #2f3e46;
 }
 
 #account th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
-  background-color: #4caf50;
+  background-color: #84a98c;
   color: white;
 }

@@ -1,27 +1,38 @@
 import React from 'react';
+import '../assets/styles/components/AccountForm.scss';
 
 const AccountForm = () => {
   return (
     <form>
+      <h1>Crea un nueva cuenta</h1>
       <label htmlFor='identifier'>
         Identificador
-        <input className='form-control' id='identifier' placeholder='Agrega un identificador' type='text' />
+        <input id='identifier' placeholder='Agrega un identificador numerico' type='text' maxLength='8' />
       </label>
       <label htmlFor='description'>
         Descripcion
-        <input className='form-control' id='description' placeholder='Agrega una descripcion' type='textarea' />
+        <textarea id='description' placeholder='Agrega una descripcion' rows='5' />
       </label>
       <label htmlFor='level'>
         Nivel
-        <input className='form-control' id='level' placeholder='Agrega un nivel del 1 al 5' type='number' min='1' max='5' />
+        <select id='level'>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+        </select>
       </label>
       <label htmlFor='type'>
         Tipo
-        <input className='form-control' id='type' placeholder='Selecciona un tipo' type='number' min='1' max='2' />
+        <select id='type'>
+          <option>1</option>
+          <option>2</option>
+        </select>
       </label>
       <label htmlFor='keycontrol'>
         Llave de control
-        <input className='form-control' id='keycontrol' placeholder='Agrega una llave de control valida' type='number' />
+        <input id='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' maxLength='8' />
       </label>
       <label htmlFor='balance'>
         Tipo de saldo
@@ -30,6 +41,7 @@ const AccountForm = () => {
           <option>Acreedor</option>
         </select>
       </label>
+      <button type='submit'>Crear</button>
     </form>
   );
 };
