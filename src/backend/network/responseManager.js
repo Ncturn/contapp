@@ -1,7 +1,4 @@
 const success = (res, codeStatus, body) => {
-  res.header({
-    'Access-Control-Allow-Origin': 'http://localhost:8080',
-  });
   res.status(codeStatus).send({
     error: '',
     body,
@@ -9,9 +6,6 @@ const success = (res, codeStatus, body) => {
 };
 
 const fail = (res, codeStatus, error) => {
-  res.header({
-    'Access-Control-Allow-Origin': 'http://localhost:8080',
-  });
   res.status(codeStatus).send({
     error,
     body: '',
