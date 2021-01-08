@@ -1,11 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../assets/styles/components/AccountForm.scss';
+import { Redirect, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 const AccountForm = () => {
+  const [redirect, setRedirect] = useState(false);
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => {
     console.log(data);
+    fetch(`http://${window.location.hostname}:3000/account/`, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
+        if (!response.error) {
+          setRedirect(true);
+          alert('Cuenta creada exitosamente');
+        } else {
+          alert(response.error);
+        }
+      });
   };
   const firstNumberIdentifier = (value) => {
     const firstNumber = String(value).charAt(0);
@@ -16,7 +35,9 @@ const AccountForm = () => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      { redirect && <Redirect to='/' />}
       <h1>Crea un nueva cuenta</h1>
+      <Link to='/'>Home</Link>
       <label htmlFor='identifier'>
         Identificador
         <input ref={register({ required: 'Este campo es requirido', valueAsNumber: true, validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador numerico' type='number' />
@@ -57,8 +78,8 @@ const AccountForm = () => {
         Tipo de saldo
         <select ref={register({ required: 'Este campo es requirido' })} name='balance'>
           <option value=''>...</option>
-          <option>Deudor</option>
-          <option>Acreedor</option>
+          <option value='deudor'>Deudor</option>
+          <option value='acreedor'>Acreedor</option>
         </select>
         {errors.balance && <p>{ errors.balance.message }</p>}
       </label>
