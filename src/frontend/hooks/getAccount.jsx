@@ -6,7 +6,7 @@ const getAccount = () => {
     body: [],
   });
   useEffect(() => {
-    fetch(`http://${window.location.hostname}:3000/account/`)
+    fetch('http://localhost:3000/account/')
       .then((data) => data.json())
       .then((data) => {
         setAccounts(data);
