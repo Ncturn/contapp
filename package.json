@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "App to",
-  "main": "public/electron.js",
+  "main": "./electron.js",
   "scripts": {
     "webpack-build": "webpack --mode production",
     "webpack-start": "webpack serve --mode development --env development",
