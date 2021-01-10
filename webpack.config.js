@@ -5,9 +5,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: './src/frontend/index.js',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
-    publicPath: '/',
+    // publicPath: '/', //only for browserRouting to redirect trafic to load js
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -55,9 +55,9 @@ module.exports = {
       },
     ],
   },
-  devServer: {
-    historyApiFallback: true,
-  },
+  // devServer: { //only for browserRouting to redirect trafic to load js
+  //   historyApiFallback: true,
+  // },
   plugins: [
     new HtmlWebPackPlugin({
       template: './public/index.html',
