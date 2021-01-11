@@ -7,7 +7,7 @@
   "scripts": {
     "webpack-build": "webpack --mode production",
     "webpack-start": "webpack serve --mode development --env development",
-    "server": "nodemon src/backend/server.js",
+    "server": "nodemon server/server.js",
     "electron-build": "electron-builder",
     "build": "npm run webpack-build && npm run electron-build",
     "start": "concurrently \"cross-env BROWSER=none npm run webpack-start\" \"wait-on http://localhost:8080 && electron .\""
