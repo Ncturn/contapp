@@ -8,7 +8,7 @@ const AccountForm = () => {
   const { register, handleSubmit, errors } = useForm();
   const onSubmit = (data) => {
     console.log(data);
-    fetch(`http://${window.location.hostname}:3000/account/`, {
+    fetch('http://localhost:3000/account/', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
