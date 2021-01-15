@@ -8,7 +8,7 @@ const AccountTable = () => {
   const accounts = getAccount();
   return (
     <div>
-      <Link to='/create'>create</Link>
+      <Link to='/create'>Crear nueva cuenta</Link>
       <h1 id='title'>Account Table</h1>
       <table id='account'>
         <tbody>

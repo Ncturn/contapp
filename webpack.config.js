@@ -1,12 +1,16 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
+const dllManifest = require('./build/react-manifest.json');
 
 module.exports = {
-  entry: './src/frontend/index.js',
+  entry: {
+    app: './src/frontend/index.js',
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: 'js/[name].js',
     // publicPath: '/', //only for browserRouting to redirect trafic to load js
   },
   resolve: {
@@ -18,7 +22,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: [
           /node_modules/,
-          /backend/,
         ],
         use: {
           loader: 'babel-loader',
@@ -59,6 +62,10 @@ module.exports = {
   //   historyApiFallback: true,
   // },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: path.join(__dirname, 'build'),
+      manifest: dllManifest,
+    }),
     new HtmlWebPackPlugin({
       template: './public/index.html',
       filename: './index.html',
