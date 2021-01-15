@@ -42,12 +42,12 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
       keycontrol,
       balance,
     }, {
-      identifier: 'required|integer|digits:8|identifier:5',
+      identifier: 'required|string|length:8,1|identifier:5',
       description: 'required|string',
       level: 'required|integer|between:1,5',
-      type: 'required|integer|between:1,2',
-      keycontrol: 'required|integer|digits:8|identifier:5',
-      balance: 'required|accepted:deudor,acreedor',
+      type: 'required|string|accepted:resumen,detalle',
+      keycontrol: 'required|string|length:8,1|identifier:5',
+      balance: 'required|string|accepted:deudor,acreedor',
     });
     accountValidator.check()
       .then((matched) => {
@@ -62,9 +62,11 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
           };
           resolve(store.save(account));
         } else {
+          const input = Object.keys(accountValidator.errors);
+          const error = accountValidator.errors[input[0]];
           const response = {
             code: 400,
-            error: accountValidator.errors,
+            error: error.message,
           };
           reject(response);
         }

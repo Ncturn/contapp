@@ -1,11 +1,11 @@
 const { Schema, model } = require('mongoose');
 
 const accountSchema = new Schema({
-  identifier: Number,
+  identifier: String,
   description: String,
   level: Number,
-  type: Number,
-  keycontrol: Number,
+  type: String,
+  keycontrol: String,
   balance: String,
 });
 
