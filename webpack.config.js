@@ -3,10 +3,12 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './src/frontend/index.js',
+  entry: {
+    app: './src/frontend/index.js',
+  },
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js',
+    filename: 'js/[name].js',
     // publicPath: '/', //only for browserRouting to redirect trafic to load js
   },
   resolve: {
@@ -18,7 +20,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: [
           /node_modules/,
-          /backend/,
         ],
         use: {
           loader: 'babel-loader',
