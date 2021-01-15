@@ -15,6 +15,4 @@ const server = () => {
   });
 };
 
-server();
-
 module.exports = server;
