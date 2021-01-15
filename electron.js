@@ -17,7 +17,7 @@ function createWindow() {
   win.webContents.openDevTools();
 
   win.loadURL(
-    isDev ? 'http://localhost:8080' : `file://${path.join(__dirname, '../build/index.html')}`,
+    isDev ? 'http://localhost:8080' : `file://${path.join(__dirname, 'index.html')}`,
   );
 }
 
