@@ -13,7 +13,7 @@
     "webpack:dll:react": "webpack --config webpack.dll.config.js --mode production",
     "electron:build": "electron-builder",
     "build": "npm run webpack:build && npm run webpack:server:build && npm run webpack:electron:build && npm run electron:build",
-    "start": "concurrently \"cross-env BROWSER=none npm run webpack:start\" \"wait-on http://localhost:8080 && electron .\""
+    "start": "concurrently \"cross-env BROWSER=none npm run webpack:start\" \"wait-on http://localhost:8080 && electron ./electron.js\""
   },
   "keywords": [],
   "author": "Ncturn",

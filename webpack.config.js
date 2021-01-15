@@ -6,7 +6,7 @@ const dllManifest = require('./build/react-manifest.json');
 
 module.exports = {
   entry: {
-    app: './src/frontend/index.js',
+    app: './src/index.js',
   },
   output: {
     path: path.resolve(__dirname, 'build'),

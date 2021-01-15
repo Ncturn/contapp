@@ -41,7 +41,7 @@ const AccountForm = () => {
         <h1>Crea una nueva cuenta</h1>
         <label htmlFor='identifier'>
           Identificador
-          <input ref={register({ required: 'Este campo es requirido', valueAsNumber: true, validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador numerico' type='number' />
+          <input ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador numerico' type='text' />
           {errors.identifier && <p>{ errors.identifier.message }</p>}
         </label>
         <label htmlFor='description'>
@@ -63,16 +63,16 @@ const AccountForm = () => {
         </label>
         <label htmlFor='type'>
           Tipo
-          <select ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name='type'>
+          <select ref={register({ required: 'Este campo es requirido' })} name='type'>
             <option value=''>...</option>
-            <option>1</option>
-            <option>2</option>
+            <option value='resumen'>Resumen</option>
+            <option value='detalle'>Detalle</option>
           </select>
           {errors.type && <p>{ errors.type.message }</p>}
         </label>
         <label htmlFor='keycontrol'>
           Llave de control
-          <input ref={register({ required: 'Este campo es requirido', valueAsNumber: true, validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='number' />
+          <input ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' />
           {errors.keycontrol && <p>{ errors.keycontrol.message }</p>}
         </label>
         <label htmlFor='balance'>
