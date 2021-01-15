@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const webpack = require('webpack');
+const dllManifest = require('./build/react-manifest.json');
 
 module.exports = {
   entry: {
@@ -60,6 +62,10 @@ module.exports = {
   //   historyApiFallback: true,
   // },
   plugins: [
+    new webpack.DllReferencePlugin({
+      context: path.join(__dirname, 'build'),
+      manifest: dllManifest,
+    }),
     new HtmlWebPackPlugin({
       template: './public/index.html',
       filename: './index.html',

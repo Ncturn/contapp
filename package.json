@@ -10,8 +10,9 @@
     "server:start": "nodemon server/server.js",
     "webpack:server:build": "webpack --config webpack.server.config.js --mode production",
     "webpack:electron:build": "webpack --config webpack.electron.config.js --mode production",
+    "webpack:dll:react": "webpack --config webpack.dll.config.js --mode production",
     "electron:build": "electron-builder",
-    "build": "npm run webpack:build && npm run webpack:server:build && npm run webpack:electron:build && npm run electron-build",
+    "build": "npm run webpack:build && npm run webpack:server:build && npm run webpack:electron:build && npm run electron:build",
     "start": "concurrently \"cross-env BROWSER=none npm run webpack:start\" \"wait-on http://localhost:8080 && electron .\""
   },
   "keywords": [],
