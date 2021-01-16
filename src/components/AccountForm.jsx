@@ -6,14 +6,19 @@ import { useForm } from 'react-hook-form';
 const AccountForm = () => {
   const [redirect, setRedirect] = useState(false);
   const { register, handleSubmit, errors } = useForm();
+  let accounttype = '';
+  let assingAccounttype = true;
   const onSubmit = (data) => {
-    console.log(data);
+    const account = {
+      ...data,
+      accounttype,
+    };
     fetch('http://localhost:3000/account/', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(account),
     })
       .then((response) => response.json())
       .then((response) => {
@@ -26,9 +31,36 @@ const AccountForm = () => {
         }
       });
   };
+  const setAccountType = (number) => {
+    switch (number) {
+      case '1':
+        accounttype = 'activo';
+        break;
+      case '2':
+        accounttype = 'pasivo';
+        break;
+      case '3':
+        accounttype = 'capital';
+        break;
+      case '4':
+        accounttype = 'ingresos';
+        break;
+      case '5':
+        accounttype = 'gastos';
+        break;
+      default:
+        break;
+    }
+  };
   const firstNumberIdentifier = (value) => {
     const firstNumber = String(value).charAt(0);
     if (firstNumber > 0 && firstNumber <= 5) {
+      if (assingAccounttype) {
+        setAccountType(firstNumber);
+        assingAccounttype = false;
+      } else {
+        assingAccounttype = true;
+      }
       return true;
     }
     return false;
