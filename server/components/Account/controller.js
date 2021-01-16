@@ -32,7 +32,7 @@ const getAccount = () => {
   });
 };
 
-const createAccount = ({ identifier, description, level, type, keycontrol, balance }) => {
+const createAccount = ({ identifier, description, level, type, keycontrol, balance, accounttype }) => {
   return new Promise((resolve, reject) => {
     const accountValidator = new niv.Validator({
       identifier,
@@ -41,6 +41,7 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
       type,
       keycontrol,
       balance,
+      accounttype,
     }, {
       identifier: 'required|string|length:8,1|identifier:5',
       description: 'required|string',
@@ -48,6 +49,7 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
       type: 'required|string|accepted:resumen,detalle',
       keycontrol: 'required|string|length:8,1|identifier:5',
       balance: 'required|string|accepted:deudor,acreedor',
+      accounttype: 'required|string',
     });
     accountValidator.check()
       .then((matched) => {
@@ -59,6 +61,7 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
             type,
             keycontrol,
             balance,
+            accounttype,
           };
           resolve(store.save(account));
         } else {

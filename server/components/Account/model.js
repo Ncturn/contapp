@@ -6,6 +6,7 @@ const accountSchema = new Schema({
   level: Number,
   type: String,
   keycontrol: String,
+  accounttype: String,
   balance: String,
 });
 
