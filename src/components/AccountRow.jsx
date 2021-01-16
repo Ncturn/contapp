@@ -1,4 +1,5 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const AccountRow = (account) => {
   const { identifier, description, level, type, keycontrol, balance, accounttype } = account.account;
@@ -10,7 +11,13 @@ const AccountRow = (account) => {
       <td>{`NIVEL ${level}`}</td>
       <td>{type.toUpperCase()}</td>
       <td>{keycontrol}</td>
-      <td>{balance.toUpperCase()}</td>
+      <td className='row-options'>
+        {balance.toUpperCase()}
+        <div className='row-buttons'>
+          <FontAwesomeIcon icon='pencil-alt' />
+          <FontAwesomeIcon icon='trash-alt' />
+        </div>
+      </td>
     </tr>
   );
 };

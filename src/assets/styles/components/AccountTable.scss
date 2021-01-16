@@ -25,6 +25,11 @@
   color: #2f3e46;
 }
 
+#account tr:hover .row-buttons,
+#account tr:hover ~ .row-buttons {
+  opacity: 1;
+}
+
 #account th {
   padding-top: 12px;
   padding-bottom: 12px;
@@ -43,4 +48,21 @@ a {
   text-decoration: none;
   color: #2f3e46;
   background-color: #cad2c5;
+}
+
+.row-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-buttons {
+  opacity: 0;
+}
+
+svg {
+  margin-right: 0.5em;
+}
+
+svg:hover {
+  color: #84a98c;
 }
