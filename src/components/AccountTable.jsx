@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Account from './Account';
+import AccountRow from './AccountRow';
 import getAccount from '../hooks/getAccount';
 import '../assets/styles/components/AccountTable.scss';
 
@@ -13,15 +13,16 @@ const AccountTable = () => {
       <table id='account'>
         <tbody>
           <tr>
-            <th>Identifier</th>
-            <th>Description</th>
-            <th>Level</th>
-            <th>Type</th>
-            <th>Keycontrol</th>
+            <th>Identificador</th>
+            <th>Descripcion</th>
+            <th>Tipo de cuenta</th>
+            <th>Nivel</th>
+            <th>Tipo</th>
+            <th>LLave padre</th>
             <th>Balance</th>
           </tr>
           {
-            !accounts.error && accounts.body.map((account) => <Account key={account.identifier} account={account} />)
+            !accounts.error && accounts.body.map((account) => <AccountRow key={account.identifier} account={account} />)
           }
         </tbody>
       </table>
