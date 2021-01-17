@@ -15,8 +15,8 @@ const save = async (account) => {
 
   if (isIdentifierUnique.length !== 0 || (keyControlExists.length === 0 && !isFirst)) {
     const response = {
-      code: 400,
-      error: 'Keycontrol does not exists or identifier duplicated',
+      code: 409,
+      error: 'Identificador duplicado o llave de control no encontrada',
     };
     return Promise.reject(response);
   }
@@ -45,14 +45,39 @@ const remove = async (identifier) => {
     });
   }
   const response = {
-    code: 400,
+    code: 409,
     error: 'Esta cuenta no puede ser borrada mientras sea llave de control de otra cuenta',
   };
   return Promise.reject(response);
+};
+
+const edit = async (editedAccount) => {
+  const account = await Model.findOne({
+    identifier: editedAccount.identifier,
+  });
+  if (!account) {
+    const response = {
+      code: 404,
+      error: 'No se encontro ninguna cuenta',
+    };
+    return Promise.reject(response);
+  }
+  const keys = Object.keys(editedAccount);
+  keys.forEach((key) => {
+    if (key !== 'identifier' && key !== 'keycontrol') {
+      account[key] = editedAccount[key];
+    }
+  });
+  const newAccount = await account.save();
+  return Promise.resolve({
+    code: 200,
+    body: newAccount,
+  });
 };
 
 module.exports = {
   find,
   save,
   remove,
+  edit,
 };
