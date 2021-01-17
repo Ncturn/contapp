@@ -26,4 +26,15 @@ router.post('/', (req, res) => {
     });
 });
 
+router.delete('/', (req, res) => {
+  const accountDeleted = controller.deleteAccount(req.body.identifier);
+  accountDeleted
+    .then((response) => {
+      responseManager.success(res, response.code, response.body);
+    })
+    .catch((response) => {
+      responseManager.fail(res, response.code, response.error);
+    });
+});
+
 module.exports = router;
