@@ -28,7 +28,31 @@ const save = async (account) => {
   });
 };
 
+const remove = async (identifier) => {
+  const account = await Model.find({
+    identifier,
+  });
+  const isKeyControl = await Model.find({
+    keycontrol: identifier,
+  });
+  if (account.length !== 0 && isKeyControl.length === 0) {
+    await Model.deleteOne({
+      identifier,
+    });
+    return Promise.resolve({
+      code: 200,
+      body: 'Cuenta borrada exitosamente',
+    });
+  }
+  const response = {
+    code: 400,
+    error: 'Esta cuenta no puede ser borrada mientras sea llave de control de otra cuenta',
+  };
+  return Promise.reject(response);
+};
+
 module.exports = {
   find,
   save,
+  remove,
 };
