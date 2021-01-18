@@ -1,11 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import AccountRow from './AccountRow';
-import getAccount from '../hooks/getAccount';
+import useAccount from '../hooks/useAccount';
 import '../assets/styles/components/AccountTable.scss';
 
 const AccountTable = () => {
-  const accounts = getAccount();
+  const [accounts, setAccounts] = useAccount();
+  const removeComponent = (index) => {
+    accounts.body.splice(index, 1);
+    setAccounts({
+      error: accounts.error,
+      body: accounts.body,
+    });
+  };
+  console.log(accounts.body);
   return (
     <div>
       <Link to='/create'>Crear nueva cuenta</Link>
@@ -22,7 +30,7 @@ const AccountTable = () => {
             <th>Balance</th>
           </tr>
           {
-            !accounts.error && accounts.body.map((account) => <AccountRow key={account.identifier} account={account} />)
+            !accounts.error && accounts.body.map((account, index) => <AccountRow key={account.identifier} removeComponent={removeComponent} index={index} accountData={account} />)
           }
         </tbody>
       </table>
