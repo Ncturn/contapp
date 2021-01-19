@@ -1,7 +1,7 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const AccountRow = ({ index, accountData, removeComponent }) => {
+const AccountRow = ({ index, accountData, removeComponent, history }) => {
   const { identifier, description, level, type, keycontrol, balance, accounttype } = accountData;
   const sendRequestToDeleteAccount = () => {
     fetch('http://localhost:3000/account/', {
@@ -29,6 +29,9 @@ const AccountRow = ({ index, accountData, removeComponent }) => {
       sendRequestToDeleteAccount();
     }
   };
+  const handlePencilClick = () => {
+    history.push(`/edit/${identifier}`);
+  };
   return (
     <tr>
       <td>{identifier}</td>
@@ -40,7 +43,7 @@ const AccountRow = ({ index, accountData, removeComponent }) => {
       <td className='row-options'>
         {balance.toUpperCase()}
         <div className='row-buttons'>
-          <FontAwesomeIcon icon='pencil-alt' />
+          <FontAwesomeIcon onClick={handlePencilClick} icon='pencil-alt' />
           <FontAwesomeIcon onClick={handleTrashClick} icon='trash-alt' />
         </div>
       </td>
