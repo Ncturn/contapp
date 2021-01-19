@@ -12,9 +12,44 @@ niv.extend('identifier', ({ value, args }) => {
   return false;
 });
 
-const getAccount = () => {
+const validateAccount = ({ identifier, description, level, type, keycontrol, balance, accounttype }) => {
+  const accountValidator = new niv.Validator({
+    identifier,
+    description,
+    level,
+    type,
+    keycontrol,
+    balance,
+    accounttype,
+  }, {
+    identifier: 'required|string|length:8,1|identifier:5',
+    description: 'required|string',
+    level: 'required|integer|between:1,5',
+    type: 'required|string|accepted:resumen,detalle',
+    keycontrol: 'required|string|length:8,1|identifier:5',
+    balance: 'required|string|accepted:deudor,acreedor',
+    accounttype: 'required|string',
+  });
+  return accountValidator;
+};
+
+const getValidatorErrors = (errorObject) => {
+  const input = Object.keys(errorObject);
+  const error = errorObject[input[0]];
+  const response = {
+    code: 400,
+    error: error.message,
+  };
+  return response;
+};
+
+const getAccount = (accountfilter) => {
   return new Promise((resolve, reject) => {
-    const account = store.find({});
+    const filter = {};
+    if (accountfilter) {
+      filter.identifier = accountfilter;
+    }
+    const account = store.find(filter);
     account
       .then((list) => {
         resolve({
@@ -77,7 +112,41 @@ const createAccount = ({ identifier, description, level, type, keycontrol, balan
   });
 };
 
+const deleteAccount = (identifier) => {
+  return new Promise((resolve, reject) => {
+    const accountValidator = new niv.Validator({
+      identifier,
+    }, {
+      identifier: 'required|string|length:8,1|identifier:5',
+    });
+    accountValidator.check()
+      .then((matched) => {
+        if (matched) {
+          resolve(store.remove(identifier));
+        } else {
+          reject(getValidatorErrors(accountValidator.errors));
+        }
+      });
+  });
+};
+
+const editAccount = (accountEdited) => {
+  return new Promise((resolve, reject) => {
+    const accountValidator = validateAccount(accountEdited);
+    accountValidator.check()
+      .then((matched) => {
+        if (matched) {
+          resolve(store.edit(accountEdited));
+        } else {
+          reject(getValidatorErrors(accountValidator.errors));
+        }
+      });
+  });
+};
+
 module.exports = {
   getAccount,
   createAccount,
+  deleteAccount,
+  editAccount,
 };

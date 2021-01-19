@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const getAccount = () => {
+const useAccount = () => {
   const [accounts, setAccounts] = useState({
     error: 'error',
     body: [],
@@ -12,7 +12,7 @@ const getAccount = () => {
         setAccounts(data);
       });
   }, []);
-  return accounts;
+  return [accounts, setAccounts];
 };
 
-export default getAccount;
+export default useAccount;
