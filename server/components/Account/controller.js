@@ -43,9 +43,13 @@ const getValidatorErrors = (errorObject) => {
   return response;
 };
 
-const getAccount = () => {
+const getAccount = (accountfilter) => {
   return new Promise((resolve, reject) => {
-    const account = store.find({});
+    const filter = {};
+    if (accountfilter) {
+      filter.identifier = accountfilter;
+    }
+    const account = store.find(filter);
     account
       .then((list) => {
         resolve({

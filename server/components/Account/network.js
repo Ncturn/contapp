@@ -5,7 +5,8 @@ const responseManager = require('../../network/responseManager');
 const router = express.Router();
 
 router.get('/', (req, res) => {
-  const account = controller.getAccount();
+  const accountfilter = req.query.identifier || null;
+  const account = controller.getAccount(accountfilter);
   account
     .then((response) => {
       responseManager.success(res, response.code, response.body);
