@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import AccountRow from './AccountRow';
 import useAccount from '../hooks/useAccount';
 import '../assets/styles/components/AccountTable.scss';
@@ -16,7 +15,6 @@ const AccountTable = ({ history }) => {
   console.log(accounts.body);
   return (
     <div>
-      <Link to='/create'>Crear nueva cuenta</Link>
       <h1 id='title'>Account Table</h1>
       <table id='account'>
         <tbody>
