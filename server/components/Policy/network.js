@@ -20,4 +20,12 @@ router.post('/', async (req, res) => {
   });
 });
 
+router.delete('/', async (req, res) => {
+  const response = await controller.removePolicy(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
+});
+
 module.exports = router;
