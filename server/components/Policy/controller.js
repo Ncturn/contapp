@@ -35,7 +35,22 @@ const createPolicy = async (policy) => {
   return response;
 };
 
+const removePolicy = async ({ identifier }) => {
+  const policyValidator = new Validator({
+    identifier,
+  }, {
+    identifier: 'required|string|length:5,5|policy',
+  });
+  const matched = await policyValidator.check();
+  if (matched) {
+    return store.remove(identifier);
+  }
+  const response = errorResponse(policyValidator.errors);
+  return response;
+};
+
 module.exports = {
   getPolicy,
   createPolicy,
+  removePolicy,
 };
