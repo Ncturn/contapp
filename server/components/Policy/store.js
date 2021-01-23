@@ -30,7 +30,26 @@ const save = async (policy) => {
   };
 };
 
+const remove = async (identifier) => {
+  const isRemoved = await Model.deleteOne({
+    identifier,
+  });
+  if (isRemoved.deletedCount === 0) {
+    return {
+      code: 404,
+      error: 'Póliza no encontrada, verifique el identificador',
+      body: '',
+    };
+  }
+  return {
+    code: 200,
+    error: null,
+    body: 'Póliza borrada exitosamente',
+  };
+};
+
 module.exports = {
   find,
   save,
+  remove,
 };
