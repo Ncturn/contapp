@@ -1,5 +1,6 @@
 const Model = require('./model');
 const accountModel = require('../Account/model');
+const { accountExists, policyExists } = require('../../utils/commonQueries');
 
 const find = async (filter) => {
   const policies = await Model.find(filter).populate('account');
@@ -48,8 +49,39 @@ const remove = async (identifier) => {
   };
 };
 
+const patch = async (updatedPolicy) => {
+  const policy = await policyExists(Model, updatedPolicy.identifier);
+  if (!policy) {
+    return {
+      code: 404,
+      error: 'No se encontro la poliza',
+      body: '',
+    };
+  }
+  const account = await accountExists(accountModel, updatedPolicy.account);
+  if (!account) {
+    return {
+      code: 404,
+      error: 'No se encontro la cuenta asociada a la póliza',
+      body: '',
+    };
+  }
+  const keys = Object.keys(updatedPolicy);
+  keys.forEach((key) => {
+    policy[key] = updatedPolicy[key];
+  });
+  policy.account = account._id;
+  const patchPolicy = await policy.save();
+  return {
+    code: 200,
+    body: patchPolicy,
+    error: null,
+  };
+};
+
 module.exports = {
   find,
   save,
   remove,
+  patch,
 };
