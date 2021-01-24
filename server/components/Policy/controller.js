@@ -49,8 +49,29 @@ const removePolicy = async ({ identifier }) => {
   return response;
 };
 
+const patchPolicy = async (policy) => {
+  const policyValidator = new Validator({
+    ...policy,
+  }, {
+    date: 'required|date',
+    identifier: 'required|string|length:5,5|policy',
+    consecutive: 'required|integer|digits:3',
+    account: 'required|string|length:8,1|account:5',
+    concept: 'required|string',
+    amount: 'required|decimal',
+    type: 'required|string|accepted:cargo,abono',
+  });
+  const matched = await policyValidator.check();
+  if (matched) {
+    return store.patch(policy);
+  }
+  const response = errorResponse(policyValidator.errors);
+  return response;
+};
+
 module.exports = {
   getPolicy,
   createPolicy,
   removePolicy,
+  patchPolicy,
 };
