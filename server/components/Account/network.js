@@ -1,6 +1,5 @@
 const express = require('express');
 const controller = require('./controller');
-const responseManager = require('../../network/responseManager');
 
 const router = express.Router();
 
@@ -29,15 +28,12 @@ router.delete('/', async (req, res) => {
   });
 });
 
-router.patch('/', (req, res) => {
-  const editedAccount = controller.editAccount(req.body);
-  editedAccount
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+router.patch('/', async (req, res) => {
+  const response = await controller.editAccount(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
 module.exports = router;

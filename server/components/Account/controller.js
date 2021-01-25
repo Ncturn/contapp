@@ -47,18 +47,23 @@ const removeAccount = async ({ identifier }) => {
   return errorResponse(accountValidator.errors);
 };
 
-const editAccount = (accountEdited) => {
-  return new Promise((resolve, reject) => {
-    const accountValidator = validateAccount(accountEdited);
-    accountValidator.check()
-      .then((matched) => {
-        if (matched) {
-          resolve(store.edit(accountEdited));
-        } else {
-          reject(getValidatorErrors(accountValidator.errors));
-        }
-      });
+const editAccount = async (accountEdited) => {
+  const accountValidator = new Validator({
+    ...accountEdited,
+  }, {
+    identifier: 'required|string|length:8,1|account:5',
+    description: 'required|string',
+    level: 'required|integer|between:1,5',
+    type: 'required|string|accepted:resumen,detalle',
+    keycontrol: 'required|string|length:8,1|account:5',
+    balance: 'required|string|accepted:deudor,acreedor',
+    accounttype: 'required|string',
   });
+  const matched = await accountValidator.check();
+  if (matched) {
+    return store.edit(accountEdited);
+  }
+  return errorResponse(accountValidator.errors);
 };
 
 module.exports = {

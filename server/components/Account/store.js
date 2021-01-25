@@ -8,8 +8,6 @@ const find = async (filter) => {
 
 const save = async (account) => {
   const isIdentifierUnique = await accountExists(Model, account.identifier);
-  const isFirst = account.identifier === account.keycontrol;
-  const keyControlExists = await accountExists(Model, account.keycontrol);
   if (isIdentifierUnique) {
     return {
       code: 409,
@@ -17,6 +15,8 @@ const save = async (account) => {
       error: 'El identificador de la cuenta ya existe',
     };
   }
+  const isFirst = account.identifier === account.keycontrol;
+  const keyControlExists = await accountExists(Model, account.keycontrol);
   if (!keyControlExists && !isFirst) {
     return {
       code: 404,
@@ -51,7 +51,7 @@ const remove = async (identifier) => {
     return {
       code: 404,
       error: 'Cuenta no encontrada, verifique el identificador',
-      body: '',
+      body: null,
     };
   }
   return {
@@ -62,27 +62,33 @@ const remove = async (identifier) => {
 };
 
 const edit = async (editedAccount) => {
-  const account = await Model.findOne({
-    identifier: editedAccount.identifier,
-  });
+  const account = await accountExists(Model, editedAccount.identifier);
   if (!account) {
-    const response = {
+    return {
       code: 404,
-      error: 'No se encontro ninguna cuenta',
+      error: 'Cuenta no encontrada, verifique el identificador',
+      body: null,
     };
-    return Promise.reject(response);
+  }
+  const isFirst = editedAccount.identifier === editedAccount.keycontrol;
+  const keyControlExists = await accountExists(Model, editedAccount.keycontrol);
+  if (!keyControlExists && !isFirst) {
+    return {
+      code: 404,
+      body: null,
+      error: 'No se encontro la llave de control ingresada',
+    };
   }
   const keys = Object.keys(editedAccount);
   keys.forEach((key) => {
-    if (key !== 'identifier' && key !== 'keycontrol') {
-      account[key] = editedAccount[key];
-    }
+    account[key] = editedAccount[key];
   });
   const newAccount = await account.save();
-  return Promise.resolve({
+  return {
     code: 200,
     body: newAccount,
-  });
+    error: null,
+  };
 };
 
 module.exports = {
