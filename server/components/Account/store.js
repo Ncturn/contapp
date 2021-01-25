@@ -1,4 +1,5 @@
 const Model = require('./model');
+const { accountExists } = require('../../utils/commonQueries');
 
 const find = async (filter) => {
   const accounts = await Model.find(filter).sort({ identifier: 'asc' });
@@ -6,27 +7,30 @@ const find = async (filter) => {
 };
 
 const save = async (account) => {
-  const isIdentifierUnique = await Model.find({
-    identifier: account.identifier,
-  });
+  const isIdentifierUnique = await accountExists(Model, account.identifier);
   const isFirst = account.identifier === account.keycontrol;
-  const keyControlExists = await Model.find({
-    identifier: account.keycontrol,
-  });
-
-  if (isIdentifierUnique.length !== 0 || (keyControlExists.length === 0 && !isFirst)) {
-    const response = {
+  const keyControlExists = await accountExists(Model, account.keycontrol);
+  if (isIdentifierUnique) {
+    return {
       code: 409,
-      error: 'Identificador duplicado o llave de control no encontrada',
+      body: null,
+      error: 'El identificador de la cuenta ya existe',
     };
-    return Promise.reject(response);
+  }
+  if (!keyControlExists && !isFirst) {
+    return {
+      code: 409,
+      body: null,
+      error: 'No se encontro la llave de control ingresada',
+    };
   }
   const accountModel = new Model(account);
   const accountData = await accountModel.save();
-  return Promise.resolve({
+  return {
     code: 201,
     body: accountData,
-  });
+    error: null,
+  };
 };
 
 const remove = async (identifier) => {
