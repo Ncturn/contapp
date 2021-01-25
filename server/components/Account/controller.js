@@ -43,28 +43,17 @@ const getValidatorErrors = (errorObject) => {
   return response;
 };
 
-const getAccount = (accountfilter) => {
-  return new Promise((resolve, reject) => {
-    const filter = {};
-    if (accountfilter) {
-      filter.identifier = accountfilter;
-    }
-    const account = store.find(filter);
-    account
-      .then((list) => {
-        resolve({
-          code: 200,
-          body: list,
-        });
-      })
-      .catch((error) => {
-        const response = {
-          code: 500,
-          error,
-        };
-        reject(response);
-      });
-  });
+const getAccount = async (accountfilter) => {
+  const filter = {};
+  if (accountfilter) {
+    filter.identifier = accountfilter;
+  }
+  const accounts = await store.find(filter);
+  return {
+    code: 200,
+    body: accounts,
+    error: null,
+  };
 };
 
 const createAccount = ({ identifier, description, level, type, keycontrol, balance, accounttype }) => {

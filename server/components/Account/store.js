@@ -1,7 +1,8 @@
 const Model = require('./model');
 
-const find = (filter) => {
-  return Model.find(filter).sort({ identifier: 'asc' });
+const find = async (filter) => {
+  const accounts = await Model.find(filter).sort({ identifier: 'asc' });
+  return accounts;
 };
 
 const save = async (account) => {

@@ -4,16 +4,13 @@ const responseManager = require('../../network/responseManager');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const accountfilter = req.query.identifier || null;
-  const account = controller.getAccount(accountfilter);
-  account
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+  const response = await controller.getAccount(accountfilter);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
 router.post('/', (req, res) => {
