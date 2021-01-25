@@ -8,16 +8,20 @@ const find = async (filter) => {
 };
 
 const save = async (policy) => {
-  const account = await accountModel.find({
-    identifier: policy.account,
-  });
-  if (account.length === 0) {
-    const response = {
+  const account = await accountExists(accountModel, policy.account);
+  if (!account) {
+    return {
       code: 404,
       error: 'No se encontro la cuenta asociada a la póliza',
       body: '',
     };
-    return response;
+  }
+  if (account.type !== 'detalle') {
+    return {
+      code: 409,
+      error: 'La cuenta asociada debe ser de tipo detalle',
+      body: '',
+    };
   }
   const newPolicy = new Model({
     ...policy,
@@ -63,6 +67,13 @@ const edit = async (updatedPolicy) => {
     return {
       code: 404,
       error: 'No se encontro la cuenta asociada a la póliza',
+      body: '',
+    };
+  }
+  if (account.type !== 'detalle') {
+    return {
+      code: 409,
+      error: 'La cuenta asociada debe ser de tipo detalle',
       body: '',
     };
   }
