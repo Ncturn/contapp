@@ -29,7 +29,7 @@ router.delete('/', async (req, res) => {
 });
 
 router.patch('/', async (req, res) => {
-  const response = await controller.patchPolicy(req.body);
+  const response = await controller.editPolicy(req.body);
   res.status(response.code).send({
     error: response.error,
     body: response.body,

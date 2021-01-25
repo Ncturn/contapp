@@ -49,7 +49,7 @@ const remove = async (identifier) => {
   };
 };
 
-const patch = async (updatedPolicy) => {
+const edit = async (updatedPolicy) => {
   const policy = await policyExists(Model, updatedPolicy.identifier);
   if (!policy) {
     return {
@@ -83,5 +83,5 @@ module.exports = {
   find,
   save,
   remove,
-  patch,
+  edit,
 };
