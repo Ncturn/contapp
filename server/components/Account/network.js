@@ -21,15 +21,12 @@ router.post('/', async (req, res) => {
   });
 });
 
-router.delete('/', (req, res) => {
-  const deletedAccount = controller.deleteAccount(req.body.identifier);
-  deletedAccount
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+router.delete('/', async (req, res) => {
+  const response = await controller.removeAccount(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
 router.patch('/', (req, res) => {

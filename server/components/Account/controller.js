@@ -34,22 +34,17 @@ const createAccount = async (account) => {
   return errorResponse(accountValidator.errors);
 };
 
-const deleteAccount = (identifier) => {
-  return new Promise((resolve, reject) => {
-    const accountValidator = new niv.Validator({
-      identifier,
-    }, {
-      identifier: 'required|string|length:8,1|identifier:5',
-    });
-    accountValidator.check()
-      .then((matched) => {
-        if (matched) {
-          resolve(store.remove(identifier));
-        } else {
-          reject(getValidatorErrors(accountValidator.errors));
-        }
-      });
+const removeAccount = async ({ identifier }) => {
+  const accountValidator = new Validator({
+    identifier,
+  }, {
+    identifier: 'required|string|length:8,1|account:5',
   });
+  const matched = accountValidator.check();
+  if (matched) {
+    return store.remove(identifier);
+  }
+  return errorResponse(accountValidator.errors);
 };
 
 const editAccount = (accountEdited) => {
@@ -69,6 +64,6 @@ const editAccount = (accountEdited) => {
 module.exports = {
   getAccount,
   createAccount,
-  deleteAccount,
+  removeAccount,
   editAccount,
 };
