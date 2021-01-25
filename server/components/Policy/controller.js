@@ -2,10 +2,10 @@ const store = require('./store');
 const Validator = require('../../utils/CustomValidator');
 const errorResponse = require('../../utils/ErrorResponse');
 
-const getPolicy = async (policyFilter) => {
+const getPolicy = async (identifier) => {
   const filter = {};
-  if (policyFilter) {
-    filter.identifier = policyFilter;
+  if (identifier) {
+    filter.identifier = identifier;
   }
   const policies = await store.find(filter);
   return {

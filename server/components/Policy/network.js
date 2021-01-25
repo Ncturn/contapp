@@ -4,7 +4,7 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const filter = req.query.policy || null;
+  const filter = req.query.identifier || null;
   const response = await controller.getPolicy(filter);
   res.status(response.code).send({
     error: response.error,
