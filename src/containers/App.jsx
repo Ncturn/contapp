@@ -5,6 +5,7 @@ import { faPencilAlt, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import editAccount from '../views/editAccount';
 import createAccount from '../views/createAccount';
 import AccountTable from '../components/AccountTable';
+import Policy from '../components/Policy';
 import Layout from '../components/Layout';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route exact path='/' component={AccountTable} />
           <Route exact path='/create' component={createAccount} />
           <Route exact path='/edit/:identifier' component={editAccount} />
+          <Route exact path='/policy' component={Policy} />
         </Switch>
       </Layout>
     </HashRouter>
