@@ -49,7 +49,7 @@ const removePolicy = async ({ identifier }) => {
   return response;
 };
 
-const patchPolicy = async (policy) => {
+const editPolicy = async (policy) => {
   const policyValidator = new Validator({
     ...policy,
   }, {
@@ -63,7 +63,7 @@ const patchPolicy = async (policy) => {
   });
   const matched = await policyValidator.check();
   if (matched) {
-    return store.patch(policy);
+    return store.edit(policy);
   }
   const response = errorResponse(policyValidator.errors);
   return response;
@@ -73,5 +73,5 @@ module.exports = {
   getPolicy,
   createPolicy,
   removePolicy,
-  patchPolicy,
+  editPolicy,
 };

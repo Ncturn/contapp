@@ -1,52 +1,39 @@
 const express = require('express');
 const controller = require('./controller');
-const responseManager = require('../../network/responseManager');
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   const accountfilter = req.query.identifier || null;
-  const account = controller.getAccount(accountfilter);
-  account
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+  const response = await controller.getAccount(accountfilter);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
-router.post('/', (req, res) => {
-  const newAccount = controller.createAccount(req.body);
-  newAccount
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+router.post('/', async (req, res) => {
+  const response = await controller.createAccount(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
-router.delete('/', (req, res) => {
-  const deletedAccount = controller.deleteAccount(req.body.identifier);
-  deletedAccount
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+router.delete('/', async (req, res) => {
+  const response = await controller.removeAccount(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
-router.patch('/', (req, res) => {
-  const editedAccount = controller.editAccount(req.body);
-  editedAccount
-    .then((response) => {
-      responseManager.success(res, response.code, response.body);
-    })
-    .catch((response) => {
-      responseManager.fail(res, response.code, response.error);
-    });
+router.patch('/', async (req, res) => {
+  const response = await controller.editAccount(req.body);
+  res.status(response.code).send({
+    error: response.error,
+    body: response.body,
+  });
 });
 
 module.exports = router;
