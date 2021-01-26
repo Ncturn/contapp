@@ -8,6 +8,14 @@ const find = async (filter) => {
 };
 
 const save = async (policy) => {
+  const isIdentifierUnique = policyExists(Model, policy.identifier);
+  if (isIdentifierUnique) {
+    return {
+      code: 409,
+      body: null,
+      error: 'El identificador de la poliza ya existe',
+    };
+  }
   const account = await accountExists(accountModel, policy.account);
   if (!account) {
     return {
@@ -25,7 +33,7 @@ const save = async (policy) => {
   }
   const newPolicy = new Model({
     ...policy,
-    account: account[0]._id,
+    account: account._id,
   });
   const policyData = await newPolicy.save();
   return {
