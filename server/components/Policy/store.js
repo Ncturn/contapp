@@ -8,7 +8,7 @@ const find = async (filter) => {
 };
 
 const save = async (policy) => {
-  const isIdentifierUnique = policyExists(Model, policy.identifier);
+  const isIdentifierUnique = await policyExists(Model, policy.identifier);
   if (isIdentifierUnique) {
     return {
       code: 409,
