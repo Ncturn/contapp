@@ -1,43 +1,34 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage }) => {
-  const { date, identifier, consecutive, account, concept, amount, type } = formValues;
-  const { register, handleSubmit, errors } = useForm(
+  const { register, handleSubmit, errors, reset } = useForm(
     {
-      defaultValues: {
-        date,
-        identifier,
-        consecutive,
-        account,
-        concept,
-        amount,
-        type,
-      },
+      defaultValues: formValues,
     },
   );
-  const onSubmit = (data) => {
+  useEffect(() => {
+    reset(formValues);
+  }, [formValues]);
+  const onSubmit = async (data) => {
     const policy = {
       ...data,
       consecutive: parseInt(data.consecutive, 10),
     };
-    fetch('http://localhost:3000/policy/', {
+    const response = await fetch('http://localhost:3000/policy/', {
       method: httpMethod,
       headers: {
         'content-type': 'application/json',
       },
       body: JSON.stringify(policy),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-        if (!response.error) {
-          alert(successMessage);
-          history.push('/policy');
-        } else {
-          alert(response.error);
-        }
-      });
+    });
+    const responseObject = await response.json();
+    if (!responseObject.error) {
+      alert(successMessage);
+      history.push('/policy');
+    } else {
+      alert(responseObject.error);
+    }
   };
   const validateAccount = (value) => {
     const firstNumber = value.charAt(0);
@@ -107,7 +98,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage }) 
         </select>
         {errors.type && <p>{ errors.type.message }</p>}
       </label>
-      <button type='submit'>Crear</button>
+      <button type='submit'>Guardar</button>
     </form>
   );
 };
