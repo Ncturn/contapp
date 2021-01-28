@@ -1,8 +1,16 @@
-#title {
-  text-align: center;
+.table-title {
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  margin: auto;
 }
 
-#account {
+.plus-icon {
+  font-size: 3em;
+  margin: 0;
+}
+
+table {
   text-align: initial;
   border-collapse: collapse;
   border: 3px solid #ddd;
@@ -10,27 +18,27 @@
   margin: auto;
 }
 
-#account td,
-#account th {
+table td,
+table th {
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-#account tr:nth-child(even) {
+table tr:nth-child(even) {
   background-color: #52796f;
 }
 
-#account tr:hover {
+table tr:hover {
   background-color: #cad2c5;
   color: #2f3e46;
 }
 
-#account tr:hover .row-buttons,
-#account tr:hover ~ .row-buttons {
+table tr:hover .row-buttons,
+table tr:hover ~ .row-buttons {
   opacity: 1;
 }
 
-#account th {
+table th {
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;

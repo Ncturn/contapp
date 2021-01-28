@@ -51,6 +51,9 @@ const Policy = ({ history }) => {
   const handlePencilClick = (identifier) => {
     history.push(`/policy/edit/${identifier}`);
   };
+  const handlePlusClick = () => {
+    history.push('/policy/create/');
+  };
   const removeDateTime = () => {
     const policiesRefact = [];
     policies.body.forEach((policy) => {
@@ -62,7 +65,7 @@ const Policy = ({ history }) => {
     return policiesRefact;
   };
   return (
-    <Table title={title} items={removeDateTime()} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} />
+    <Table title={title} items={removeDateTime()} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
   );
 };
 
