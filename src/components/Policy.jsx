@@ -8,23 +8,21 @@ const Policy = ({ history }) => {
   });
   const title = 'Pólizas';
   const policyFields = [
-    'date',
-    'identifier',
-    'consecutive',
-    'account',
-    'concept',
-    'amount',
-    'type',
+    'fecha',
+    'identificador',
+    'consecutivo',
+    'cuenta',
+    'concepto',
+    'importe',
+    'tipo',
   ];
-  useEffect(() => {
-    fetch('http://localhost:3000/policy/')
-      .then((data) => data.json())
-      .then((data) => {
-        setPolicies(data);
-      });
+  useEffect(async () => {
+    const response = await fetch('http://localhost:3000/policy/');
+    const responseObject = await response.json();
+    setPolicies(responseObject);
   }, [policies]);
-  const deletePolicy = (identifier) => {
-    fetch('http://localhost:3000/policy/', {
+  const deletePolicy = async (identifier) => {
+    const response = await fetch('http://localhost:3000/policy/', {
       method: 'DELETE',
       headers: {
         'content-type': 'application/json',
@@ -32,18 +30,16 @@ const Policy = ({ history }) => {
       body: JSON.stringify({
         identifier,
       }),
-    })
-      .then((response) => response.json())
-      .then((response) => {
-        if (!response.error) {
-          alert(response.body);
-        } else {
-          alert(response.error);
-        }
-      });
+    });
+    const responseObject = await response.json();
+    if (!responseObject.error) {
+      alert(responseObject.body);
+    } else {
+      alert(responseObject.error);
+    }
   };
   const handleTrashClick = (identifier) => {
-    const confirmDelete = window.confirm(`¿Desea borrar la cuenta ${identifier}?`);
+    const confirmDelete = window.confirm(`¿Desea borrar la poliza ${identifier}?`);
     if (confirmDelete) {
       deletePolicy(identifier);
     }
