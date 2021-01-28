@@ -7,6 +7,7 @@ import createAccount from '../views/createAccount';
 import AccountTable from '../components/AccountTable';
 import Policy from '../components/Policy';
 import CreatePolicy from '../views/CreatePolicy';
+import EditPolicy from '../views/EditPolicy';
 import Layout from '../components/Layout';
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
           <Route exact path='/edit/:identifier' component={editAccount} />
           <Route exact path='/policy' component={Policy} />
           <Route exact path='/policy/create' component={CreatePolicy} />
+          <Route exact path='/policy/edit/:identifier' component={EditPolicy} />
         </Switch>
       </Layout>
     </HashRouter>

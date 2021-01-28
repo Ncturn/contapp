@@ -49,7 +49,7 @@ const Policy = ({ history }) => {
     }
   };
   const handlePencilClick = (identifier) => {
-    // history.push(`/edit/${identifier}`);
+    history.push(`/policy/edit/${identifier}`);
   };
   const removeDateTime = () => {
     const policiesRefact = [];
