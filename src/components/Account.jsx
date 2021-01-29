@@ -20,7 +20,7 @@ const Account = ({ history }) => {
     const response = await fetch('http://localhost:3000/account/');
     const responseObject = await response.json();
     setAccounts(responseObject);
-  }, [accounts]);
+  }, []);
   const deleteAccount = async (identifier) => {
     const response = await fetch('http://localhost:3000/account/', {
       method: 'DELETE',

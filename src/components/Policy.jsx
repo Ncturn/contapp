@@ -20,7 +20,7 @@ const Policy = ({ history }) => {
     const response = await fetch('http://localhost:3000/policy/');
     const responseObject = await response.json();
     setPolicies(responseObject);
-  }, [policies]);
+  }, []);
   const deletePolicy = async (identifier) => {
     const response = await fetch('http://localhost:3000/policy/', {
       method: 'DELETE',
