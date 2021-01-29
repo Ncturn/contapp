@@ -11,10 +11,16 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     reset(formValues);
   }, [formValues]);
   const onSubmit = async (data) => {
+    let identifier = '';
+    if (disable) {
+      identifier = formValues.identifier;
+    } else {
+      identifier = data.identifier;
+    }
     const policy = {
       ...data,
       consecutive: parseInt(data.consecutive, 10),
-      identifier: formValues.identifier,
+      identifier,
     };
     const response = await fetch('http://localhost:3000/policy/', {
       method: httpMethod,

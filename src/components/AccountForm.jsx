@@ -14,10 +14,16 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
   let assingAccounttype = true;
   let accounttype = '';
   const onSubmit = async (data) => {
+    let identifier = '';
+    if (disable) {
+      identifier = formValues.identifier;
+    } else {
+      identifier = data.identifier;
+    }
     const account = {
       ...data,
       accounttype,
-      identifier: formValues.identifier,
+      identifier,
     };
     const response = await fetch('http://localhost:3000/account/', {
       method: httpMethod,
