@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage }) => {
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
   const { register, handleSubmit, errors, reset } = useForm(
     {
       defaultValues: formValues,
@@ -14,6 +14,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage }) 
     const policy = {
       ...data,
       consecutive: parseInt(data.consecutive, 10),
+      identifier: formValues.identifier,
     };
     const response = await fetch('http://localhost:3000/policy/', {
       method: httpMethod,
@@ -59,15 +60,15 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage }) 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <h1>{title}</h1>
+      <label htmlFor='identifier'>
+        Identificador
+        <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' type='text' disabled={disable} />
+        {errors.identifier && <p>{ errors.identifier.message }</p>}
+      </label>
       <label htmlFor='date'>
         Fecha
         <input ref={register({ required: 'Este campo es requirido' })} name='date' type='date' />
         {errors.date && <p>{ errors.date.message }</p>}
-      </label>
-      <label htmlFor='identifier'>
-        Identificador
-        <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' type='text' />
-        {errors.identifier && <p>{ errors.identifier.message }</p>}
       </label>
       <label htmlFor='consecutive'>
         Consecutivo
