@@ -10,12 +10,13 @@ const TableRow = ({ itemData, handleTrashClick, handlePencilClick }) => {
     <tr>
       {
         values.map((field, index) => {
+          const addUniqueKey = index;
           if (typeof field === 'object') {
-            return <td key={field.identifier}>{field.identifier}</td>;
+            return <td key={field.identifier + addUniqueKey}>{field.identifier}</td>;
           }
           if (index === values.length - 1) {
             return (
-              <td className='row-options' key={field}>
+              <td className='row-options' key={field + addUniqueKey}>
                 {field}
                 <div className='row-buttons'>
                   <FontAwesomeIcon onClick={() => handlePencilClick(identifier)} icon='pencil-alt' />
@@ -24,7 +25,7 @@ const TableRow = ({ itemData, handleTrashClick, handlePencilClick }) => {
               </td>
             );
           }
-          return <td key={field}>{field}</td>;
+          return <td key={field + addUniqueKey}>{field}</td>;
         })
       }
 
