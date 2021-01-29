@@ -8,8 +8,8 @@ const Policy = ({ history }) => {
   });
   const title = 'Pólizas';
   const policyFields = [
-    'fecha',
     'identificador',
+    'fecha',
     'consecutivo',
     'cuenta',
     'concepto',
