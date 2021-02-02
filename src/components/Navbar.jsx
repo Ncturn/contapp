@@ -9,9 +9,9 @@ const Navbar = () => {
         <li>Contapp</li>
       </div>
       <div>
-        <Link to='/'>Home</Link>
-        <Link to='/account'>Cuentas</Link>
-        <Link to='/policy'>Polizas</Link>
+        <Link to='/' replace> Home</Link>
+        <Link to='/account' replace>Cuentas</Link>
+        <Link to='/policy' replace>Polizas</Link>
       </div>
     </nav>
   );

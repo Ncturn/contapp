@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AccountForm from '../components/AccountForm';
 
-const editAccount = ({ match, history }) => {
+const EditAccount = ({ match, history }) => {
+  const title = 'Editar cuenta';
   const [account, setAccount] = useState({
     identifier: '',
     description: '',
@@ -10,24 +11,17 @@ const editAccount = ({ match, history }) => {
     keycontrol: '',
     balance: '',
   });
-  useEffect(() => {
-    fetch(`http://localhost:3000/account/?identifier=${match.params.identifier}`)
-      .then((data) => data.json())
-      .then((data) => {
-        setAccount({
-          ...data.body[0],
-        });
-      });
-  }, []);
-  const handleChange = (event) => {
+  useEffect(async () => {
+    const response = await fetch(`http://localhost:3000/account/?identifier=${match.params.identifier}`);
+    const responseObject = await response.json();
     setAccount({
-      ...account,
-      [event.target.name]: event.target.value,
+      ...responseObject.body[0],
     });
-  };
+  }, []);
+  console.log(account);
   return (
-    <AccountForm httpMethod='PATCH' formValues={account} onChange={handleChange} history={history} successMessage='Cambios guardados' disabled={true} />
+    <AccountForm title={title} httpMethod='PATCH' formValues={account} history={history} successMessage='Cambios guardados' disable={true} />
   );
 };
 
-export default editAccount;
+export default EditAccount;

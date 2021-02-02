@@ -3,8 +3,8 @@ import PolicyForm from '../components/PolicyForm';
 
 const CreatePolicy = ({ history }) => {
   const formValues = {
-    date: '',
     identifier: '',
+    date: '',
     consecutive: '',
     account: '',
     concept: '',
@@ -12,7 +12,7 @@ const CreatePolicy = ({ history }) => {
     type: '',
   };
   return (
-    <PolicyForm title='Crear Poliza' httpMethod='POST' formValues={formValues} history={history} successMessage='Cuenta creada exitosamente' />
+    <PolicyForm title='Crear Poliza' httpMethod='POST' formValues={formValues} history={history} successMessage='Poliza creada exitosamente' />
   );
 };
 
