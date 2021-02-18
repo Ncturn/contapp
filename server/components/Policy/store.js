@@ -1,9 +1,8 @@
 const Model = require('./model');
-const accountModel = require('../Account/model');
-const { accountExists, policyExists } = require('../../utils/commonQueries');
+const { policyExists } = require('../../utils/commonQueries');
 
 const find = async (filter) => {
-  const policies = await Model.find(filter).populate('account');
+  const policies = await Model.find(filter).populate('movements.account');
   return policies;
 };
 
@@ -16,25 +15,7 @@ const save = async (policy) => {
       error: 'El identificador de la poliza ya existe',
     };
   }
-  const account = await accountExists(accountModel, policy.account);
-  if (!account) {
-    return {
-      code: 404,
-      error: 'No se encontro la cuenta asociada a la póliza',
-      body: '',
-    };
-  }
-  if (account.type !== 'detalle') {
-    return {
-      code: 409,
-      error: 'La cuenta asociada debe ser de tipo detalle',
-      body: '',
-    };
-  }
-  const newPolicy = new Model({
-    ...policy,
-    account: account._id,
-  });
+  const newPolicy = new Model(policy);
   const policyData = await newPolicy.save();
   return {
     code: 201,
@@ -70,26 +51,10 @@ const edit = async (updatedPolicy) => {
       body: '',
     };
   }
-  const account = await accountExists(accountModel, updatedPolicy.account);
-  if (!account) {
-    return {
-      code: 404,
-      error: 'No se encontro la cuenta asociada a la póliza',
-      body: '',
-    };
-  }
-  if (account.type !== 'detalle') {
-    return {
-      code: 409,
-      error: 'La cuenta asociada debe ser de tipo detalle',
-      body: '',
-    };
-  }
   const keys = Object.keys(updatedPolicy);
   keys.forEach((key) => {
     policy[key] = updatedPolicy[key];
   });
-  policy.account = account._id;
   const patchPolicy = await policy.save();
   return {
     code: 200,

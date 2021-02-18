@@ -2,6 +2,22 @@ const store = require('./store');
 const Validator = require('../../utils/CustomValidator');
 const errorResponse = require('../../utils/ErrorResponse');
 
+const getPolicyValidator = (policy) => {
+  const policyValidator = new Validator({
+    ...policy,
+  }, {
+    date: 'required|date',
+    identifier: 'required|string|length:5,5|policy',
+    movements: 'required|array',
+    'movements.*.consecutive': 'required|integer',
+    'movements.*.account': 'required|mongoId',
+    'movements.*.concept': 'required|string',
+    'movements.*.amount': 'required|decimal',
+    'movements.*.type': 'required|string|accepted:cargo,abono',
+  });
+  return policyValidator;
+};
+
 const getPolicy = async (identifier) => {
   const filter = {};
   if (identifier) {
@@ -16,17 +32,7 @@ const getPolicy = async (identifier) => {
 };
 
 const createPolicy = async (policy) => {
-  const policyValidator = new Validator({
-    ...policy,
-  }, {
-    date: 'required|date',
-    identifier: 'required|string|length:5,5|policy',
-    consecutive: 'required|integer|digits:3',
-    account: 'required|string|length:8,1|account:5',
-    concept: 'required|string',
-    amount: 'required|decimal',
-    type: 'required|string|accepted:cargo,abono',
-  });
+  const policyValidator = getPolicyValidator(policy);
   const matched = await policyValidator.check();
   if (matched) {
     return store.save(policy);
@@ -50,17 +56,7 @@ const removePolicy = async ({ identifier }) => {
 };
 
 const editPolicy = async (policy) => {
-  const policyValidator = new Validator({
-    ...policy,
-  }, {
-    date: 'required|date',
-    identifier: 'required|string|length:5,5|policy',
-    consecutive: 'required|integer|digits:3',
-    account: 'required|string|length:8,1|account:5',
-    concept: 'required|string',
-    amount: 'required|decimal',
-    type: 'required|string|accepted:cargo,abono',
-  });
+  const policyValidator = getPolicyValidator(policy);
   const matched = await policyValidator.check();
   if (matched) {
     return store.edit(policy);
