@@ -75,21 +75,21 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
     return false;
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className='accountForm' onSubmit={handleSubmit(onSubmit)}>
       <h1>{title}</h1>
-      <label htmlFor='identifier'>
+      <label className='accountLabel' htmlFor='identifier'>
         Identificador
-        <input ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' disabled={disable} />
-        {errors.identifier && <p>{ errors.identifier.message }</p>}
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' disabled={disable} />
+        {errors.identifier && <p className='errorMessage'>{ errors.identifier.message }</p>}
       </label>
-      <label htmlFor='description'>
+      <label className='accountLabel' htmlFor='description'>
         Descripcion
-        <textarea ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega una descripcion' rows='5' />
-        {errors.description && <p>{ errors.description.message }</p>}
+        <textarea className='accountTextarea' ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega una descripcion' rows='5' />
+        {errors.description && <p className='errorMessage'>{ errors.description.message }</p>}
       </label>
-      <label htmlFor='level'>
+      <label className='accountLabel' htmlFor='level'>
         Nivel
-        <select ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name='level'>
+        <select className='accountSelect' ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name='level'>
           <option value=''>...</option>
           <option>1</option>
           <option>2</option>
@@ -97,30 +97,30 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
           <option>4</option>
           <option>5</option>
         </select>
-        {errors.level && <p>{ errors.level.message }</p>}
+        {errors.level && <p className='errorMessage'>{ errors.level.message }</p>}
       </label>
-      <label htmlFor='type'>
+      <label className='accountLabel' htmlFor='type'>
         Tipo
-        <select ref={register({ required: 'Este campo es requirido' })} name='type'>
+        <select className='accountSelect' ref={register({ required: 'Este campo es requirido' })} name='type'>
           <option value=''>...</option>
           <option value='resumen'>Resumen</option>
           <option value='detalle'>Detalle</option>
         </select>
-        {errors.type && <p>{ errors.type.message }</p>}
+        {errors.type && <p className='errorMessage'>{ errors.type.message }</p>}
       </label>
-      <label htmlFor='keycontrol'>
+      <label className='accountLabel' htmlFor='keycontrol'>
         Llave de control
-        <input ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' />
-        {errors.keycontrol && <p>{ errors.keycontrol.message }</p>}
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' />
+        {errors.keycontrol && <p className='errorMessage'>{ errors.keycontrol.message }</p>}
       </label>
-      <label htmlFor='balance'>
+      <label className='accountLabel' htmlFor='balance'>
         Tipo de saldo
-        <select ref={register({ required: 'Este campo es requirido' })} name='balance'>
+        <select className='accountSelect' ref={register({ required: 'Este campo es requirido' })} name='balance'>
           <option value=''>...</option>
           <option value='deudor'>Deudor</option>
           <option value='acreedor'>Acreedor</option>
         </select>
-        {errors.balance && <p>{ errors.balance.message }</p>}
+        {errors.balance && <p className='errorMessage'>{ errors.balance.message }</p>}
       </label>
       <button type='submit'>Guardar</button>
     </form>
