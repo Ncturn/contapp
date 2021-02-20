@@ -8,7 +8,7 @@ import '../assets/styles/components/PolicyForm.scss';
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
   const [indexes, setIndexes] = useState([0]);
   const [counter, setCounter] = useState(1);
-  const { register, handleSubmit, errors, reset } = useForm(
+  const { register, handleSubmit, errors, reset, setValue } = useForm(
     {
       defaultValues: formValues,
     },
@@ -73,6 +73,14 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     }
     return false;
   };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Tab' && event.target.value === '' && counter > 1) {
+      const inputName = event.target.name;
+      const lastElementName = inputName.replace(counter - 1, (counter - 2));
+      const lastElementValue = document.getElementsByName(lastElementName)[0].value;
+      setValue(inputName, lastElementValue);
+    }
+  };
   return (
     <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
       <h1>{title}</h1>
@@ -118,7 +126,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
           Tipo
         </p>
       </div>
-      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} />)}
+      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} />)}
       <button type='submit'>Guardar</button>
     </form>
   );
