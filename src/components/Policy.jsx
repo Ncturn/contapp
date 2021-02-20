@@ -12,10 +12,13 @@ const Policy = ({ history }) => {
     'fecha',
     '# movimientos',
   ];
-  useEffect(async () => {
+  const getPolicies = async () => {
     const response = await fetch('http://localhost:3000/policy/');
     const responseObject = await response.json();
     setPolicies(responseObject);
+  };
+  useEffect(() => {
+    getPolicies();
   }, []);
   const deletePolicy = async (identifier) => {
     const response = await fetch('http://localhost:3000/policy/', {
@@ -29,6 +32,7 @@ const Policy = ({ history }) => {
     });
     const responseObject = await response.json();
     if (!responseObject.error) {
+      getPolicies();
       alert(responseObject.body);
     } else {
       alert(responseObject.error);
