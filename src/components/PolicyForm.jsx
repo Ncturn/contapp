@@ -1,7 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { ErrorMessage } from '@hookform/error-message';
+import PolicyFormRow from './PolicyFormRow';
+import '../assets/styles/components/PolicyForm.scss';
 
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
+  const [indexes, setIndexes] = useState([0]);
+  const [counter, setCounter] = useState(1);
   const { register, handleSubmit, errors, reset } = useForm(
     {
       defaultValues: formValues,
@@ -10,6 +16,18 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
   useEffect(() => {
     reset(formValues);
   }, [formValues]);
+  const addMovement = () => {
+    setIndexes((prevIndexes) => [...prevIndexes, counter]);
+    setCounter((prevCounter) => prevCounter + 1);
+  };
+
+  const removeMovement = () => {
+    setIndexes((prevIndexes) => {
+      prevIndexes.pop();
+      return prevIndexes;
+    });
+    setCounter((prevCounter) => prevCounter - 1);
+  };
   const onSubmit = async (data) => {
     let identifier = '';
     if (disable) {
@@ -19,7 +37,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     }
     const policy = {
       ...data,
-      consecutive: parseInt(data.consecutive, 10),
       identifier,
     };
     const response = await fetch('http://localhost:3000/policy/', {
@@ -64,47 +81,51 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     return false;
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
       <h1>{title}</h1>
-      <label htmlFor='identifier'>
-        Identificador
-        <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' type='text' disabled={disable} />
-        {errors.identifier && <p>{ errors.identifier.message }</p>}
-      </label>
-      <label htmlFor='date'>
-        Fecha
-        <input ref={register({ required: 'Este campo es requirido' })} name='date' type='date' />
-        {errors.date && <p>{ errors.date.message }</p>}
-      </label>
-      <label htmlFor='consecutive'>
-        Consecutivo
-        <input ref={register({ required: 'Este campo es requirido', validate: (value) => validateLength(value, 3) || 'El consecutivo debe ser de tres numeros' })} name='consecutive' type='number' placeholder='Agregar consecutivo' />
-        {errors.consecutive && <p>{ errors.consecutive.message }</p>}
-      </label>
-      <label htmlFor='account'>
-        Cuenta
-        <input ref={register({ required: 'Este campo es requirido', validate: (value) => validateAccount(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La cuenta no debe ser mayor a 8 caracteres' } })} name='account' placeholder='Agrega un identificador de cuenta' type='text' />
-        {errors.account && <p>{ errors.account.message }</p>}
-      </label>
-      <label htmlFor='concept'>
-        Concepto
-        <input ref={register({ required: 'Este campo es requirido' })} name='concept' placeholder='Agrega el concepto de la poliza' type='text' />
-        {errors.concept && <p>{ errors.concept.message }</p>}
-      </label>
-      <label htmlFor='amount'>
-        Importe
-        <input ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name='amount' type='number' step='0.01' placeholder='Agrega el importe de la poliza solo dos decimales' />
-        {errors.amount && <p>{ errors.amount.message }</p>}
-      </label>
-      <label htmlFor='type'>
-        Tipo
-        <select ref={register({ required: 'Este campo es requirido' })} name='type'>
-          <option value=''>...</option>
-          <option value='cargo'>Cargo</option>
-          <option value='abono'>Abono</option>
-        </select>
-        {errors.type && <p>{ errors.type.message }</p>}
-      </label>
+      <div className='policyHeader'>
+        <div className='HeaderLeft'>
+          <label htmlFor='identifier'>
+            Identificador
+            <div>
+              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' type='text' disabled={disable} />
+              <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
+            </div>
+          </label>
+          <label htmlFor='date'>
+            Fecha
+            <div>
+              <input ref={register({ required: 'Este campo es requirido' })} name='date' type='date' />
+              <ErrorMessage errors={errors} name='date' as='p' className='errorMessage' />
+            </div>
+          </label>
+        </div>
+        <div>
+          <FontAwesomeIcon onClick={addMovement} className='plus-icon' icon='plus-square' />
+          <FontAwesomeIcon onClick={removeMovement} className='plus-icon' icon='minus-square' />
+        </div>
+      </div>
+      <div className='policyTitles'>
+        <p className='policyP'>
+          Consecutivo
+        </p>
+        <p className='policyP'>
+          Cuenta
+        </p>
+        <p className='policyP'>
+          Nombre de la cuenta
+        </p>
+        <p className='policyP'>
+          Concepto
+        </p>
+        <p className='policyP'>
+          Importe
+        </p>
+        <p className='policyP'>
+          Tipo
+        </p>
+      </div>
+      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} validateAccount={validateAccount} validateLength={validateLength} register={register} errors={errors} />)}
       <button type='submit'>Guardar</button>
     </form>
   );

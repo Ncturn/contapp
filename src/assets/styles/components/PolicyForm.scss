@@ -1,0 +1,59 @@
+.policyForm {
+  margin-top: 1em;
+  width: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3em;
+}
+
+.policyHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.HeaderLeft {
+  display: flex;
+  flex-direction: row;
+}
+
+.HeaderLeft label {
+  display: flex;
+  flex-direction: row;
+}
+
+.HeaderLeft .errorMessage {
+  margin-left: 0.7em;
+  margin-right: 0.7em;
+}
+
+.HeaderLeft input {
+  margin-left: 1em;
+  margin-right: 1em;
+  width: 15em;
+  border-radius: 0.3em;
+  height: 2em;
+}
+
+.policyTitles {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.policyRows {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.policyP {
+  display: inline;
+  width: 9.5em;
+}
+
+.policyInput {
+  width: 15em;
+  border-radius: 0.3em;
+  height: 2em;
+}
