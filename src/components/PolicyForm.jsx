@@ -54,13 +54,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
       alert(responseObject.error);
     }
   };
-  const validateAccount = (value) => {
-    const firstNumber = value.charAt(0);
-    if (firstNumber > 0 && firstNumber <= 5) {
-      return true;
-    }
-    return false;
-  };
   const validateLength = (value, validLength) => {
     const policyLength = value.length;
     if (policyLength === validLength) {
@@ -88,7 +81,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
           <label htmlFor='identifier'>
             Identificador
             <div>
-              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' type='text' disabled={disable} />
+              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' maxLength='5' type='text' disabled={disable} />
               <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
             </div>
           </label>
@@ -125,7 +118,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
           Tipo
         </p>
       </div>
-      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} validateAccount={validateAccount} validateLength={validateLength} register={register} errors={errors} />)}
+      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} />)}
       <button type='submit'>Guardar</button>
     </form>
   );
