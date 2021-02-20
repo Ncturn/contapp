@@ -5,9 +5,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
-  const [indexes, setIndexes] = useState([0]);
-  const [counter, setCounter] = useState(1);
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false, initialIdex = [0], initialCounter = 1 }) => {
+  const [indexes, setIndexes] = useState(initialIdex);
+  const [counter, setCounter] = useState(initialCounter);
   const { register, handleSubmit, errors, reset, setValue } = useForm(
     {
       defaultValues: formValues,
@@ -15,6 +15,8 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
   );
   useEffect(() => {
     reset(formValues);
+    setIndexes(initialIdex);
+    setCounter(initialCounter);
   }, [formValues]);
   const addMovement = () => {
     setIndexes((prevIndexes) => [...prevIndexes, counter]);
