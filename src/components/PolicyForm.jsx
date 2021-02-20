@@ -86,16 +86,18 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     const responseObject = await response.json();
     if (responseObject.body.length > 0) {
       setValue(accountNameInput, responseObject.body[0].description);
+      const accountInput = accountNameInput.replace('accountName', 'account');
+      setValue(accountInput, responseObject.body[0]._id);
     } else {
       setValue(accountNameInput, '');
       alert('Identificador de cuenta no encontrado');
     }
   };
   const handleBlur = (event) => {
-    const accountNameInput = event.target.name.replace('account', 'accountName');
-    const accountValue = event.target.value;
-    if (accountValue !== '') {
-      getAccountName(accountValue, accountNameInput);
+    const accountNameInput = event.target.name.replace('accountId', 'accountName');
+    const accountIdValue = event.target.value;
+    if (accountIdValue !== '') {
+      getAccountName(accountIdValue, accountNameInput);
     }
   };
   return (
