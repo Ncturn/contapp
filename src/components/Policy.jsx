@@ -10,11 +10,7 @@ const Policy = ({ history }) => {
   const policyFields = [
     'identificador',
     'fecha',
-    'consecutivo',
-    'cuenta',
-    'concepto',
-    'importe',
-    'tipo',
+    '# movimientos',
   ];
   useEffect(async () => {
     const response = await fetch('http://localhost:3000/policy/');
