@@ -81,6 +81,23 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
       setValue(inputName, lastElementValue);
     }
   };
+  const getAccountName = async (accountId, accountNameInput) => {
+    const response = await fetch(`http://localhost:3000/account/?identifier=${accountId}`);
+    const responseObject = await response.json();
+    if (responseObject.body.length > 0) {
+      setValue(accountNameInput, responseObject.body[0].description);
+    } else {
+      setValue(accountNameInput, '');
+      alert('Identificador de cuenta no encontrado');
+    }
+  };
+  const handleBlur = (event) => {
+    const accountNameInput = event.target.name.replace('account', 'accountName');
+    const accountValue = event.target.value;
+    if (accountValue !== '') {
+      getAccountName(accountValue, accountNameInput);
+    }
+  };
   return (
     <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
       <h1>{title}</h1>
@@ -126,7 +143,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
           Tipo
         </p>
       </div>
-      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} />)}
+      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} handleBlur={handleBlur} />)}
       <button type='submit'>Guardar</button>
     </form>
   );
