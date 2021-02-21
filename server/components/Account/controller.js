@@ -19,11 +19,11 @@ const createAccount = async (account) => {
   const accountValidator = new Validator({
     ...account,
   }, {
-    identifier: 'required|string|length:8,1|account:5',
+    identifier: 'required|string|length:8,1|account:9',
     description: 'required|string',
     level: 'required|integer|between:1,5',
     type: 'required|string|accepted:resumen,detalle',
-    keycontrol: 'required|string|length:8,1|account:5',
+    keycontrol: 'required|string|length:8,1|account:9',
     balance: 'required|string|accepted:deudor,acreedor',
     accounttype: 'required|string',
   });

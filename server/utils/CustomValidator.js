@@ -1,7 +1,7 @@
 const niv = require('node-input-validator');
 
 niv.extendMessages({
-  account: 'El primer numero de la cuenta debe estar entre 1 y 5',
+  account: 'El primer numero de la cuenta no puede ser 0',
 });
 niv.extend('account', ({ value, args }) => {
   const firstNumber = String(value).charAt(0);
