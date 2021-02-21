@@ -2,9 +2,8 @@
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
-const server = require('./server/server');
+require('./server/server');
 
-server();
 function createWindow() {
   const win = new BrowserWindow({
     width: 1280,
