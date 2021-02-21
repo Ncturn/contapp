@@ -8,6 +8,8 @@ import '../assets/styles/components/PolicyForm.scss';
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIdex = [0], initialCounter = 1 }) => {
   const [indexes, setIndexes] = useState(initialIdex);
   const [counter, setCounter] = useState(initialCounter);
+  const [payments, setpayments] = useState(0);
+  const [charges, setcharges] = useState(0);
   const { register, handleSubmit, errors, reset, setValue, getValues } = useForm(
     {
       defaultValues: formValues,
@@ -94,10 +96,15 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
   };
   const calculateTotal = (totalAmountName) => {
     const totalAmount = document.getElementsByName(totalAmountName)[0];
-    totalAmount.value = 0;
+    let value = 0;
     totalAmount.amounts.forEach((amountName) => {
-      totalAmount.value = parseInt(totalAmount.value, 10) + getValues(amountName);
+      value += getValues(amountName);
     });
+    if (totalAmountName === 'payments') {
+      setpayments(value);
+    } else {
+      setcharges(value);
+    }
   };
   const addTotalAmountRef = (amountName, totalAmountName) => {
     const totalAmount = document.getElementsByName(totalAmountName)[0];
@@ -198,13 +205,13 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
           <label htmlFor='payments'>
             Abonos
             <div>
-              <input name='payments' type='number' value={0} readOnly />
+              <input name='payments' type='number' value={payments} readOnly />
             </div>
           </label>
           <label htmlFor='charges'>
             Cargos
             <div>
-              <input name='charges' type='number' value={0} readOnly />
+              <input name='charges' type='number' value={charges} readOnly />
             </div>
           </label>
         </div>
