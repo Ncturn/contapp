@@ -1,7 +1,7 @@
 import React from 'react';
 import { ErrorMessage } from '@hookform/error-message';
 
-const PolicyFormRow = ({ fieldName, index, register, errors, handleKeyDown, handleBlur }) => {
+const PolicyFormRow = ({ fieldName, index, register, errors, handleKeyDown, handleBlur, handleAmountsChange, handleTypesChange }) => {
 
   return (
     <div className='policyRows' name={fieldName}>
@@ -20,11 +20,11 @@ const PolicyFormRow = ({ fieldName, index, register, errors, handleKeyDown, hand
         <ErrorMessage errors={errors} name={`${fieldName}.concept`} as='p' className='errorMessage' />
       </div>
       <div>
-        <input onKeyDown={handleKeyDown} className='policyInput' ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name={`${fieldName}.amount`} type='number' step='0.01' placeholder='importe dos decimales' />
+        <input onKeyDown={handleKeyDown} onChange={handleAmountsChange} className='policyInput' ref={register({ required: 'Este campo es requirido', valueAsNumber: true })} name={`${fieldName}.amount`} type='number' step='0.01' placeholder='importe dos decimales' />
         <ErrorMessage errors={errors} name={`${fieldName}.amount`} as='p' className='errorMessage' />
       </div>
       <div>
-        <select className='policyInput' ref={register({ required: 'Este campo es requirido' })} name={`${fieldName}.type`}>
+        <select onChange={handleTypesChange} className='policyInput' ref={register({ required: 'Este campo es requirido' })} name={`${fieldName}.type`}>
           <option value=''>...</option>
           <option value='cargo'>Cargo</option>
           <option value='abono'>Abono</option>

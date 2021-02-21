@@ -8,7 +8,7 @@ import '../assets/styles/components/PolicyForm.scss';
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIdex = [0], initialCounter = 1 }) => {
   const [indexes, setIndexes] = useState(initialIdex);
   const [counter, setCounter] = useState(initialCounter);
-  const { register, handleSubmit, errors, reset, setValue } = useForm(
+  const { register, handleSubmit, errors, reset, setValue, getValues } = useForm(
     {
       defaultValues: formValues,
     },
@@ -92,54 +92,124 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       getAccountName(accountIdValue, accountNameInput);
     }
   };
+  const calculateTotal = (totalAmountName) => {
+    const totalAmount = document.getElementsByName(totalAmountName)[0];
+    totalAmount.value = 0;
+    totalAmount.amounts.forEach((amountName) => {
+      totalAmount.value = parseInt(totalAmount.value, 10) + getValues(amountName);
+    });
+  };
+  const addTotalAmountRef = (amountName, totalAmountName) => {
+    const totalAmount = document.getElementsByName(totalAmountName)[0];
+    if (!totalAmount.amounts) {
+      totalAmount.amounts = [];
+    }
+    const amountIndex = totalAmount.amounts.indexOf(amountName);
+    if (amountIndex === -1) {
+      totalAmount.amounts.push(amountName);
+    }
+  };
+  const removeTotalAmountRef = (amountName, totalAmountName) => {
+    const totalAmount = document.getElementsByName(totalAmountName)[0];
+    if (!totalAmount.amounts) {
+      totalAmount.amounts = [];
+    }
+    const amountIndex = totalAmount.amounts.indexOf(amountName);
+    if (amountIndex > -1) {
+      totalAmount.amounts.splice(amountIndex, 1);
+    }
+  };
+  const validateTypeValue = (typeValue, amountName) => {
+    if (typeValue !== '') {
+      if (typeValue === 'abono') {
+        addTotalAmountRef(amountName, 'payments');
+        removeTotalAmountRef(amountName, 'charges');
+      } else {
+        addTotalAmountRef(amountName, 'charges');
+        removeTotalAmountRef(amountName, 'payments');
+      }
+      calculateTotal('payments');
+      calculateTotal('charges');
+    }
+  };
+  const handleAmountsChange = (event) => {
+    const amountName = event.target.name;
+    const typeName = amountName.replace('amount', 'type');
+    const typeValue = getValues(typeName);
+    validateTypeValue(typeValue, amountName);
+  };
+  const handleTypesChange = (event) => {
+    const typeName = event.target.name;
+    const typeValue = getValues(typeName);
+    const amountName = typeName.replace('type', 'amount');
+    validateTypeValue(typeValue, amountName);
+  };
   return (
-    <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
-      <h1>{title}</h1>
-      <div className='policyHeader'>
-        <div className='HeaderLeft'>
-          <label htmlFor='identifier'>
-            Identificador
+    <div>
+      <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
+        <h1>{title}</h1>
+        <div className='policyHeader'>
+          <div className='HeaderLeft'>
+            <label htmlFor='identifier'>
+              Identificador
+              <div>
+                <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' maxLength='5' type='text' readOnly={readOnly} />
+                <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
+              </div>
+            </label>
+            <label htmlFor='date'>
+              Fecha
+              <div>
+                <input ref={register({ required: 'Este campo es requirido' })} name='date' type='date' />
+                <ErrorMessage errors={errors} name='date' as='p' className='errorMessage' />
+              </div>
+            </label>
+          </div>
+          <div>
+            <FontAwesomeIcon onClick={addMovement} className='plus-icon' icon='plus-square' />
+            <FontAwesomeIcon onClick={removeMovement} className='plus-icon' icon='minus-square' />
+          </div>
+        </div>
+        <div className='policyTitles'>
+          <p className='policyP'>
+            Consecutivo
+          </p>
+          <p className='policyP'>
+            Cuenta
+          </p>
+          <p className='policyP'>
+            Nombre de la cuenta
+          </p>
+          <p className='policyP'>
+            Concepto
+          </p>
+          <p className='policyP'>
+            Importe
+          </p>
+          <p className='policyP'>
+            Tipo
+          </p>
+        </div>
+        {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} handleBlur={handleBlur} handleAmountsChange={handleAmountsChange} handleTypesChange={handleTypesChange} />)}
+        <button type='submit'>Guardar</button>
+      </form>
+      <div className='policyFooter'>
+        <div className='footerInputs'>
+          <label htmlFor='payments'>
+            Abonos
             <div>
-              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' maxLength='5' type='text' readOnly={readOnly} />
-              <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
+              <input name='payments' type='number' value={0} readOnly />
             </div>
           </label>
-          <label htmlFor='date'>
-            Fecha
+          <label htmlFor='charges'>
+            Cargos
             <div>
-              <input ref={register({ required: 'Este campo es requirido' })} name='date' type='date' />
-              <ErrorMessage errors={errors} name='date' as='p' className='errorMessage' />
+              <input name='charges' type='number' value={0} readOnly />
             </div>
           </label>
         </div>
-        <div>
-          <FontAwesomeIcon onClick={addMovement} className='plus-icon' icon='plus-square' />
-          <FontAwesomeIcon onClick={removeMovement} className='plus-icon' icon='minus-square' />
-        </div>
       </div>
-      <div className='policyTitles'>
-        <p className='policyP'>
-          Consecutivo
-        </p>
-        <p className='policyP'>
-          Cuenta
-        </p>
-        <p className='policyP'>
-          Nombre de la cuenta
-        </p>
-        <p className='policyP'>
-          Concepto
-        </p>
-        <p className='policyP'>
-          Importe
-        </p>
-        <p className='policyP'>
-          Tipo
-        </p>
-      </div>
-      {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} handleBlur={handleBlur} />)}
-      <button type='submit'>Guardar</button>
-    </form>
+    </div>
   );
 };
 
