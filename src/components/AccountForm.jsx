@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import '../assets/styles/components/AccountForm.scss';
 import { useForm } from 'react-hook-form';
 
-const AccountForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
+const AccountForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false }) => {
   const { register, handleSubmit, errors, reset } = useForm(
     {
       defaultValues: formValues,
@@ -14,16 +14,9 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
   let assingAccounttype = true;
   let accounttype = '';
   const onSubmit = async (data) => {
-    let identifier = '';
-    if (disable) {
-      identifier = formValues.identifier;
-    } else {
-      identifier = data.identifier;
-    }
     const account = {
       ...data,
       accounttype,
-      identifier,
     };
     const response = await fetch('http://localhost:3000/account/', {
       method: httpMethod,
@@ -79,7 +72,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
       <h1>{title}</h1>
       <label className='accountLabel' htmlFor='identifier'>
         Identificador
-        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' disabled={disable} />
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' readOnly={readOnly} />
         {errors.identifier && <p className='errorMessage'>{ errors.identifier.message }</p>}
       </label>
       <label className='accountLabel' htmlFor='description'>

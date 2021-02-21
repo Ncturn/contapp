@@ -20,7 +20,7 @@ const EditAccount = ({ match, history }) => {
   }, []);
   console.log(account);
   return (
-    <AccountForm title={title} httpMethod='PATCH' formValues={account} history={history} successMessage='Cambios guardados' disable={true} />
+    <AccountForm title={title} httpMethod='PATCH' formValues={account} history={history} successMessage='Cambios guardados' readOnly={true} />
   );
 };
 
