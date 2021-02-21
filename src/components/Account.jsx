@@ -16,10 +16,13 @@ const Account = ({ history }) => {
     'balance',
     'tipo de cuenta',
   ];
-  useEffect(async () => {
+  const getAccounts = async () => {
     const response = await fetch('http://localhost:3000/account/');
     const responseObject = await response.json();
     setAccounts(responseObject);
+  };
+  useEffect(() => {
+    getAccounts();
   }, []);
   const deleteAccount = async (identifier) => {
     const response = await fetch('http://localhost:3000/account/', {
@@ -33,6 +36,7 @@ const Account = ({ history }) => {
     });
     const responseObject = await response.json();
     if (!responseObject.error) {
+      getAccounts();
       alert(responseObject.body);
     } else {
       alert(responseObject.error);
