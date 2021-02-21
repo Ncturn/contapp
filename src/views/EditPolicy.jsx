@@ -33,7 +33,7 @@ const EditPolicy = ({ history, match }) => {
     setPolicy(refactPolicy);
   }, []);
   return (
-    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' disable={true} initialIdex={getIndexArray()} initialCounter={policy.movements.length} />
+    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' readOnly={true} initialIdex={getIndexArray()} initialCounter={policy.movements.length} />
   );
 };
 

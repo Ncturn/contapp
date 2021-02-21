@@ -5,7 +5,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, disable = false, initialIdex = [0], initialCounter = 1 }) => {
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIdex = [0], initialCounter = 1 }) => {
   const [indexes, setIndexes] = useState(initialIdex);
   const [counter, setCounter] = useState(initialCounter);
   const { register, handleSubmit, errors, reset, setValue } = useForm(
@@ -31,22 +31,12 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
     setCounter((prevCounter) => prevCounter - 1);
   };
   const onSubmit = async (data) => {
-    let identifier = '';
-    if (disable) {
-      identifier = formValues.identifier;
-    } else {
-      identifier = data.identifier;
-    }
-    const policy = {
-      ...data,
-      identifier,
-    };
     const response = await fetch('http://localhost:3000/policy/', {
       method: httpMethod,
       headers: {
         'content-type': 'application/json',
       },
-      body: JSON.stringify(policy),
+      body: JSON.stringify(data),
     });
     const responseObject = await response.json();
     if (!responseObject.error) {
@@ -110,7 +100,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, di
           <label htmlFor='identifier'>
             Identificador
             <div>
-              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' maxLength='5' type='text' disabled={disable} />
+              <input ref={register({ required: 'Este campo es requirido', validate: { length: (value) => validateLength(value, 5) || 'El identificador dede ser de 5 caracteres', format: (value) => validatePolicyFormat(value) || 'El formato debe ser dos letras y tres numeros' } })} name='identifier' placeholder='Agrega un identificador de poliza' maxLength='5' type='text' readOnly={readOnly} />
               <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
             </div>
           </label>
