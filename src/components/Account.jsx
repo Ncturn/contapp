@@ -9,12 +9,12 @@ const Account = ({ history }) => {
   const title = 'Cuentas';
   const policyFields = [
     'identificador',
-    'descripcion',
-    'tipo de cuenta',
+    'nombre de la cuenta',
     'nivel',
     'tipo',
     'llave de control',
     'balance',
+    'tipo de cuenta',
   ];
   useEffect(async () => {
     const response = await fetch('http://localhost:3000/account/');
