@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import '../assets/styles/components/AccountForm.scss';
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
 const AccountForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false }) => {
   const { register, handleSubmit, errors, reset } = useForm(
@@ -85,12 +86,12 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
       <label className='accountLabel' htmlFor='identifier'>
         Identificador
         <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' readOnly={readOnly} maxLength='8' />
-        {errors.identifier && <p className='errorMessage'>{ errors.identifier.message }</p>}
+        <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='description'>
-        Descripcion
-        <textarea className='accountTextarea' ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega una descripcion' rows='5' />
-        {errors.description && <p className='errorMessage'>{ errors.description.message }</p>}
+        Nombre de la cuenta
+        <textarea className='accountTextarea' ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega un nombre' rows='5' />
+        <ErrorMessage errors={errors} name='description' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='level'>
         Nivel
@@ -102,7 +103,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
           <option>4</option>
           <option>5</option>
         </select>
-        {errors.level && <p className='errorMessage'>{ errors.level.message }</p>}
+        <ErrorMessage errors={errors} name='level' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='type'>
         Tipo
@@ -111,12 +112,12 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
           <option value='resumen'>Resumen</option>
           <option value='detalle'>Detalle</option>
         </select>
-        {errors.type && <p className='errorMessage'>{ errors.type.message }</p>}
+        <ErrorMessage errors={errors} name='type' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='keycontrol'>
         Llave de control
         <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' maxLength='8' />
-        {errors.keycontrol && <p className='errorMessage'>{ errors.keycontrol.message }</p>}
+        <ErrorMessage errors={errors} name='keycontrol' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='balance'>
         Tipo de saldo
@@ -125,7 +126,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
           <option value='deudor'>Deudor</option>
           <option value='acreedor'>Acreedor</option>
         </select>
-        {errors.balance && <p className='errorMessage'>{ errors.balance.message }</p>}
+        <ErrorMessage errors={errors} name='balance' as='p' className='errorMessage' />
       </label>
       <button type='submit'>Guardar</button>
     </form>
