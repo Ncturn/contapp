@@ -1,4 +1,5 @@
-.policyForm {
+.policyForm,
+.policyFooter {
   margin-top: 1em;
   width: 90%;
   margin: auto;
@@ -18,7 +19,8 @@
   flex-direction: row;
 }
 
-.HeaderLeft label {
+.HeaderLeft label,
+.footerInputs label {
   display: flex;
   flex-direction: row;
 }
@@ -28,7 +30,8 @@
   margin-right: 0.7em;
 }
 
-.HeaderLeft input {
+.HeaderLeft input,
+.footerInputs input {
   margin-left: 1em;
   margin-right: 1em;
   width: 15em;
@@ -56,4 +59,10 @@
   width: 15em;
   border-radius: 0.3em;
   height: 2em;
+}
+
+.footerInputs {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
 }
