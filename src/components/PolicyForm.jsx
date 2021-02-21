@@ -32,20 +32,27 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     });
     setCounter((prevCounter) => prevCounter - 1);
   };
+  const totalAmountsAreEqual = () => {
+    return payments === charges;
+  };
   const onSubmit = async (data) => {
-    const response = await fetch('http://localhost:3000/policy/', {
-      method: httpMethod,
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-    const responseObject = await response.json();
-    if (!responseObject.error) {
-      alert(successMessage);
-      history.push('/policy');
+    if (totalAmountsAreEqual()) {
+      const response = await fetch('http://localhost:3000/policy/', {
+        method: httpMethod,
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const responseObject = await response.json();
+      if (!responseObject.error) {
+        alert(successMessage);
+        history.push('/policy');
+      } else {
+        alert(responseObject.error);
+      }
     } else {
-      alert(responseObject.error);
+      alert('Los abonos no sn iguales a los montos');
     }
   };
   const validateLength = (value, validLength) => {
