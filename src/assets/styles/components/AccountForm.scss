@@ -1,4 +1,4 @@
-form {
+.accountForm {
   margin-top: 1em;
   width: 100%;
   display: flex;
@@ -6,13 +6,13 @@ form {
   font-size: 1.3em;
 }
 
-label {
+.accountLabel {
   display: block;
   margin: auto;
   margin-bottom: 0.5em;
 }
 
-input {
+.accountInput {
   border-radius: 0.3em;
   display: block;
   width: 20em;
@@ -20,14 +20,14 @@ input {
   font-size: 0.9em;
 }
 
-select {
+.accountSelect {
   display: block;
   width: 20.5em;
   height: 2em;
   font-size: 0.9em;
 }
 
-textarea {
+.accountTextarea {
   display: block;
   width: 20em;
   font-size: 0.9em;
@@ -39,7 +39,7 @@ h1 {
   margin-bottom: 0.5em;
 }
 
-p {
+.errorMessage {
   margin: auto;
   color: #da5870;
 }
@@ -48,6 +48,8 @@ button {
   width: 5em;
   height: 2em;
   margin: auto;
+  margin-top: 1em;
+  margin-bottom: 1em;
   font-size: 0.9em;
   background-color: #cad2c5;
   color: #2f3e46;

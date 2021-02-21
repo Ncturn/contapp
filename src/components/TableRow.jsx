@@ -6,26 +6,33 @@ const TableRow = ({ itemData, handleTrashClick, handlePencilClick }) => {
   const values = Object.values(itemData);
   values.splice(values.length - 1, 1);
   values.splice(0, 1);
+  const getElement = (key, value, isLastElement) => {
+    if (isLastElement) {
+      return (
+        <td className='row-options' key={key}>
+          {value}
+          <div className='row-buttons'>
+            <FontAwesomeIcon onClick={() => handlePencilClick(identifier)} icon='pencil-alt' />
+            <FontAwesomeIcon onClick={() => handleTrashClick(identifier)} icon='trash-alt' />
+          </div>
+        </td>
+      );
+    }
+    return <td key={key}>{value}</td>;
+  };
   return (
     <tr>
       {
         values.map((field, index) => {
           const addUniqueKey = index;
+          const isLastElement = index === values.length - 1;
           if (typeof field === 'object') {
-            return <td key={field.identifier + addUniqueKey}>{field.identifier}</td>;
+            if (field.identifier) {
+              return getElement(field.identifier + addUniqueKey, field.identifier, isLastElement);
+            }
+            return getElement(field.length + addUniqueKey, field.length, isLastElement);
           }
-          if (index === values.length - 1) {
-            return (
-              <td className='row-options' key={field + addUniqueKey}>
-                {field}
-                <div className='row-buttons'>
-                  <FontAwesomeIcon onClick={() => handlePencilClick(identifier)} icon='pencil-alt' />
-                  <FontAwesomeIcon onClick={() => handleTrashClick(identifier)} icon='trash-alt' />
-                </div>
-              </td>
-            );
-          }
-          return <td key={field + addUniqueKey}>{field}</td>;
+          return getElement(field + addUniqueKey, field, isLastElement);
         })
       }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPencilAlt, faTrashAlt, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPencilAlt, faTrashAlt, faPlusSquare, faMinusSquare } from '@fortawesome/free-solid-svg-icons';
 import EditAccount from '../views/EditAccount';
 import CreateAccount from '../views/CreateAccount';
 import Account from '../components/Account';
@@ -11,7 +11,7 @@ import EditPolicy from '../views/EditPolicy';
 import Layout from '../components/Layout';
 
 const App = () => {
-  library.add(faPencilAlt, faTrashAlt, faPlusSquare);
+  library.add(faPencilAlt, faTrashAlt, faPlusSquare, faMinusSquare);
   return (
     <HashRouter>
       <Layout>
