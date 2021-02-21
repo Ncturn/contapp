@@ -20,18 +20,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     setIndexes(initialIdex);
     setCounter(initialCounter);
   }, [formValues]);
-  const addMovement = () => {
-    setIndexes((prevIndexes) => [...prevIndexes, counter]);
-    setCounter((prevCounter) => prevCounter + 1);
-  };
-
-  const removeMovement = () => {
-    setIndexes((prevIndexes) => {
-      prevIndexes.pop();
-      return prevIndexes;
-    });
-    setCounter((prevCounter) => prevCounter - 1);
-  };
   const totalAmountsAreEqual = () => {
     return payments === charges;
   };
@@ -157,6 +145,22 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     const typeValue = getValues(typeName);
     const amountName = typeName.replace('type', 'amount');
     validateTypeValue(typeValue, amountName);
+  };
+  const addMovement = () => {
+    setIndexes((prevIndexes) => [...prevIndexes, counter]);
+    setCounter((prevCounter) => prevCounter + 1);
+  };
+  const removeMovement = () => {
+    setIndexes((prevIndexes) => {
+      prevIndexes.pop();
+      return prevIndexes;
+    });
+    setCounter((prevCounter) => prevCounter - 1);
+    const amountName = `movements[${counter - 1}].amount`;
+    removeTotalAmountRef(amountName, 'payments');
+    removeTotalAmountRef(amountName, 'charges');
+    calculateTotal('payments');
+    calculateTotal('charges');
   };
   return (
     <div>
