@@ -42,13 +42,25 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
         accounttype = 'pasivo';
         break;
       case '3':
-        accounttype = 'capital';
+        accounttype = 'capital contable';
         break;
       case '4':
         accounttype = 'ingresos';
         break;
       case '5':
-        accounttype = 'gastos';
+        accounttype = 'costos';
+        break;
+      case '6':
+        accounttype = 'gastos generales';
+        break;
+      case '7':
+        accounttype = 'financiamiento';
+        break;
+      case '8':
+        accounttype = 'cuenta deudora';
+        break;
+      case '9':
+        accounttype = 'cuenta acreedora';
         break;
       default:
         break;
@@ -56,7 +68,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
   };
   const firstNumberIdentifier = (value) => {
     const firstNumber = String(value).charAt(0);
-    if (firstNumber > 0 && firstNumber <= 5) {
+    if (firstNumber > 0) {
       if (assingAccounttype) {
         setAccountType(firstNumber);
         assingAccounttype = false;
@@ -72,7 +84,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
       <h1>{title}</h1>
       <label className='accountLabel' htmlFor='identifier'>
         Identificador
-        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' readOnly={readOnly} />
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' readOnly={readOnly} maxLength='8' />
         {errors.identifier && <p className='errorMessage'>{ errors.identifier.message }</p>}
       </label>
       <label className='accountLabel' htmlFor='description'>
@@ -103,7 +115,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
       </label>
       <label className='accountLabel' htmlFor='keycontrol'>
         Llave de control
-        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' />
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' maxLength='8' />
         {errors.keycontrol && <p className='errorMessage'>{ errors.keycontrol.message }</p>}
       </label>
       <label className='accountLabel' htmlFor='balance'>
