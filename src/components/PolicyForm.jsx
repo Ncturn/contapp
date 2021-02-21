@@ -162,6 +162,12 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     calculateTotal('payments');
     calculateTotal('charges');
   };
+  const handleMinusClick = () => {
+    const confirmDelete = window.confirm(`¿Desea borrar la fila #${counter}?`);
+    if (confirmDelete) {
+      removeMovement();
+    }
+  };
   return (
     <div>
       <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
@@ -185,7 +191,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
           </div>
           <div>
             <FontAwesomeIcon onClick={addMovement} className='plus-icon' icon='plus-square' />
-            <FontAwesomeIcon onClick={removeMovement} className='plus-icon' icon='minus-square' />
+            <FontAwesomeIcon onClick={handleMinusClick} className='plus-icon' icon='minus-square' />
           </div>
         </div>
         <div className='policyTitles'>
