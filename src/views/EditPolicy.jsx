@@ -7,6 +7,20 @@ const EditPolicy = ({ history, match }) => {
     identifier: '',
     movements: [],
   });
+  const getAmounts = (type) => {
+    const amount = {
+      value: 0,
+      names: [],
+    };
+    policy.movements.forEach((movement, index) => {
+      if (movement.type === type) {
+        amount.value += parseInt(movement.amount, 10);
+        const amountName = `movements[${index}].amount`;
+        amount.names.push(amountName);
+      }
+    });
+    return amount;
+  };
   const getRefactorPolicy = (policy) => {
     const newPolicy = {
       ...policy,
@@ -33,7 +47,7 @@ const EditPolicy = ({ history, match }) => {
     setPolicy(refactPolicy);
   }, []);
   return (
-    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' readOnly={true} initialIdex={getIndexArray()} initialCounter={policy.movements.length} />
+    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' readOnly={true} initialIndex={getIndexArray()} initialCounter={policy.movements.length} initialPayments={getAmounts('abono')} initialCharges={getAmounts('cargo')} />
   );
 };
 

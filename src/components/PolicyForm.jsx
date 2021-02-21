@@ -5,8 +5,8 @@ import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIdex = [0], initialCounter = 1 }) => {
-  const [indexes, setIndexes] = useState(initialIdex);
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = 0, initialCharges = 0 }) => {
+  const [indexes, setIndexes] = useState(initialIndex);
   const [counter, setCounter] = useState(initialCounter);
   const [payments, setpayments] = useState(0);
   const [charges, setcharges] = useState(0);
@@ -15,10 +15,19 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       defaultValues: formValues,
     },
   );
+  const setInitialAmounts = () => {
+    const totalCharges = document.getElementsByName('charges')[0];
+    totalCharges.amounts = initialCharges.names;
+    const totalPayments = document.getElementsByName('payments')[0];
+    totalPayments.amounts = initialPayments.names;
+    setpayments(initialPayments.value);
+    setcharges(initialCharges.value);
+  };
   useEffect(() => {
     reset(formValues);
-    setIndexes(initialIdex);
+    setIndexes(initialIndex);
     setCounter(initialCounter);
+    setInitialAmounts();
   }, [formValues]);
   const totalAmountsAreEqual = () => {
     return payments === charges;
