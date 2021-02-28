@@ -1,0 +1,65 @@
+.table-title {
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  margin: auto;
+}
+
+.plus-icon {
+  font-size: 3em;
+  margin: 0;
+  margin-left: 0.5em;
+}
+
+table {
+  text-align: initial;
+  border-collapse: collapse;
+  border: 3px solid #ddd;
+  width: 80%;
+  margin: auto;
+}
+
+table td,
+table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+table tr:nth-child(even) {
+  background-color: #52796f;
+}
+
+table tr:hover {
+  background-color: #cad2c5;
+  color: #2f3e46;
+}
+
+table tr:hover .row-buttons,
+table tr:hover ~ .row-buttons {
+  opacity: 1;
+}
+
+table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #84a98c;
+  color: white;
+}
+
+.row-options {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row-buttons {
+  opacity: 0;
+}
+
+svg {
+  margin-right: 0.5em;
+}
+
+svg:hover {
+  color: #84a98c;
+}
