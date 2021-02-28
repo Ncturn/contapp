@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import '../assets/styles/components/AccountForm.scss';
 import { useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 
-const AccountForm = ({ title, httpMethod, formValues, history, successMessage, disable = false }) => {
+const AccountForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false }) => {
   const { register, handleSubmit, errors, reset } = useForm(
     {
       defaultValues: formValues,
@@ -14,16 +15,9 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
   let assingAccounttype = true;
   let accounttype = '';
   const onSubmit = async (data) => {
-    let identifier = '';
-    if (disable) {
-      identifier = formValues.identifier;
-    } else {
-      identifier = data.identifier;
-    }
     const account = {
       ...data,
       accounttype,
-      identifier,
     };
     const response = await fetch('http://localhost:3000/account/', {
       method: httpMethod,
@@ -49,13 +43,25 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
         accounttype = 'pasivo';
         break;
       case '3':
-        accounttype = 'capital';
+        accounttype = 'capital contable';
         break;
       case '4':
         accounttype = 'ingresos';
         break;
       case '5':
-        accounttype = 'gastos';
+        accounttype = 'costos';
+        break;
+      case '6':
+        accounttype = 'gastos generales';
+        break;
+      case '7':
+        accounttype = 'financiamiento';
+        break;
+      case '8':
+        accounttype = 'cuenta deudora';
+        break;
+      case '9':
+        accounttype = 'cuenta acreedora';
         break;
       default:
         break;
@@ -63,7 +69,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
   };
   const firstNumberIdentifier = (value) => {
     const firstNumber = String(value).charAt(0);
-    if (firstNumber > 0 && firstNumber <= 5) {
+    if (firstNumber > 0) {
       if (assingAccounttype) {
         setAccountType(firstNumber);
         assingAccounttype = false;
@@ -79,13 +85,13 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
       <h1>{title}</h1>
       <label className='accountLabel' htmlFor='identifier'>
         Identificador
-        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' disabled={disable} />
-        {errors.identifier && <p className='errorMessage'>{ errors.identifier.message }</p>}
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'El identificador no debe ser mayor a 8 digitos' } })} name='identifier' placeholder='Agrega un identificador de cuenta' type='text' readOnly={readOnly} maxLength='8' />
+        <ErrorMessage errors={errors} name='identifier' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='description'>
-        Descripcion
-        <textarea className='accountTextarea' ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega una descripcion' rows='5' />
-        {errors.description && <p className='errorMessage'>{ errors.description.message }</p>}
+        Nombre de la cuenta
+        <textarea className='accountTextarea' ref={register({ required: 'Este campo es requirido' })} name='description' placeholder='Agrega un nombre' rows='5' />
+        <ErrorMessage errors={errors} name='description' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='level'>
         Nivel
@@ -97,7 +103,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
           <option>4</option>
           <option>5</option>
         </select>
-        {errors.level && <p className='errorMessage'>{ errors.level.message }</p>}
+        <ErrorMessage errors={errors} name='level' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='type'>
         Tipo
@@ -106,12 +112,12 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
           <option value='resumen'>Resumen</option>
           <option value='detalle'>Detalle</option>
         </select>
-        {errors.type && <p className='errorMessage'>{ errors.type.message }</p>}
+        <ErrorMessage errors={errors} name='type' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='keycontrol'>
         Llave de control
-        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'el primer numero debe ser entre 1 y 5', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' />
-        {errors.keycontrol && <p className='errorMessage'>{ errors.keycontrol.message }</p>}
+        <input className='accountInput' ref={register({ required: 'Este campo es requirido', validate: (value) => firstNumberIdentifier(value) || 'la cuenta no debe empezar con 0', maxLength: { value: 8, message: 'La llave no debe ser mayor a 8 digitos' } })} name='keycontrol' placeholder='Agrega una llave de control numerica valida' type='text' maxLength='8' />
+        <ErrorMessage errors={errors} name='keycontrol' as='p' className='errorMessage' />
       </label>
       <label className='accountLabel' htmlFor='balance'>
         Tipo de saldo
@@ -120,7 +126,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, d
           <option value='deudor'>Deudor</option>
           <option value='acreedor'>Acreedor</option>
         </select>
-        {errors.balance && <p className='errorMessage'>{ errors.balance.message }</p>}
+        <ErrorMessage errors={errors} name='balance' as='p' className='errorMessage' />
       </label>
       <button type='submit'>Guardar</button>
     </form>
