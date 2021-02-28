@@ -5,7 +5,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = 0, initialCharges = 0 }) => {
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
   const [indexes, setIndexes] = useState(initialIndex);
   const [counter, setCounter] = useState(initialCounter);
   const [payments, setpayments] = useState(0);
@@ -49,7 +49,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
         alert(responseObject.error);
       }
     } else {
-      alert('Los abonos no sn iguales a los montos');
+      alert('Los cargos y abonos no son equivalentes');
     }
   };
   const validateLength = (value, validLength) => {
@@ -228,16 +228,16 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       </form>
       <div className='policyFooter'>
         <div className='footerInputs'>
-          <label htmlFor='payments'>
-            Abonos
-            <div>
-              <input name='payments' type='number' value={payments} readOnly />
-            </div>
-          </label>
           <label htmlFor='charges'>
             Cargos
             <div>
               <input name='charges' type='number' value={charges} readOnly />
+            </div>
+          </label>
+          <label htmlFor='payments'>
+            Abonos
+            <div>
+              <input name='payments' type='number' value={payments} readOnly />
             </div>
           </label>
         </div>
