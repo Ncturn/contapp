@@ -28,11 +28,13 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     setIndexes(initialIndex);
     setCounter(initialCounter);
     setInitialAmounts();
+    document.getElementsByName('identifier')[0].focus();
   }, [formValues]);
   const totalAmountsAreEqual = () => {
     return payments === charges;
   };
   const onSubmit = async (data) => {
+    console.log(data);
     if (totalAmountsAreEqual()) {
       const response = await fetch('http://localhost:3000/policy/', {
         method: httpMethod,
