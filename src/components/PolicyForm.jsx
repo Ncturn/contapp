@@ -23,13 +23,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     setpayments(initialPayments.value);
     setcharges(initialCharges.value);
   };
-  useEffect(() => {
-    reset(formValues);
-    setIndexes(initialIndex);
-    setCounter(initialCounter);
-    setInitialAmounts();
-    document.getElementsByName('identifier')[0].focus();
-  }, [formValues]);
   const totalAmountsAreEqual = () => {
     return payments === charges;
   };
@@ -179,6 +172,31 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       removeMovement();
     }
   };
+  const createHotKeyPlusIcon = (event) => {
+    if (event.key === '+') {
+      event.preventDefault();
+      addMovement();
+    }
+  };
+  const createHotKeyMinusIcon = (event) => {
+    if (event.key === '-') {
+      event.preventDefault();
+      handleMinusClick();
+    }
+  };
+  useEffect(() => {
+    reset(formValues);
+    setIndexes(initialIndex);
+    setCounter(initialCounter);
+    setInitialAmounts();
+    document.getElementsByName('identifier')[0].focus();
+    window.addEventListener('keydown', createHotKeyPlusIcon);
+    window.addEventListener('keydown', createHotKeyMinusIcon);
+    return () => {
+      window.removeEventListener('keydown', createHotKeyPlusIcon);
+      window.removeEventListener('keydown', createHotKeyMinusIcon);
+    };
+  }, [formValues]);
   return (
     <div>
       <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
