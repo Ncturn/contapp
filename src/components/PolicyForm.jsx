@@ -5,7 +5,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = 0, initialCharges = 0 }) => {
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
   const [indexes, setIndexes] = useState(initialIndex);
   const [counter, setCounter] = useState(initialCounter);
   const [payments, setpayments] = useState(0);
@@ -23,16 +23,11 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     setpayments(initialPayments.value);
     setcharges(initialCharges.value);
   };
-  useEffect(() => {
-    reset(formValues);
-    setIndexes(initialIndex);
-    setCounter(initialCounter);
-    setInitialAmounts();
-  }, [formValues]);
   const totalAmountsAreEqual = () => {
     return payments === charges;
   };
   const onSubmit = async (data) => {
+    console.log(data);
     if (totalAmountsAreEqual()) {
       const response = await fetch('http://localhost:3000/policy/', {
         method: httpMethod,
@@ -49,7 +44,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
         alert(responseObject.error);
       }
     } else {
-      alert('Los abonos no sn iguales a los montos');
+      alert('Los cargos y abonos no son equivalentes');
     }
   };
   const validateLength = (value, validLength) => {
@@ -177,6 +172,31 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       removeMovement();
     }
   };
+  const createHotKeyPlusIcon = (event) => {
+    if (event.key === '+') {
+      event.preventDefault();
+      addMovement();
+    }
+  };
+  const createHotKeyMinusIcon = (event) => {
+    if (event.key === '-') {
+      event.preventDefault();
+      handleMinusClick();
+    }
+  };
+  useEffect(() => {
+    reset(formValues);
+    setIndexes(initialIndex);
+    setCounter(initialCounter);
+    setInitialAmounts();
+    document.getElementsByName('identifier')[0].focus();
+    window.addEventListener('keydown', createHotKeyPlusIcon);
+    window.addEventListener('keydown', createHotKeyMinusIcon);
+    return () => {
+      window.removeEventListener('keydown', createHotKeyPlusIcon);
+      window.removeEventListener('keydown', createHotKeyMinusIcon);
+    };
+  }, [formValues]);
   return (
     <div>
       <form className='policyForm' onSubmit={handleSubmit(onSubmit)}>
@@ -228,16 +248,16 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       </form>
       <div className='policyFooter'>
         <div className='footerInputs'>
-          <label htmlFor='payments'>
-            Abonos
-            <div>
-              <input name='payments' type='number' value={payments} readOnly />
-            </div>
-          </label>
           <label htmlFor='charges'>
             Cargos
             <div>
               <input name='charges' type='number' value={charges} readOnly />
+            </div>
+          </label>
+          <label htmlFor='payments'>
+            Abonos
+            <div>
+              <input name='payments' type='number' value={payments} readOnly />
             </div>
           </label>
         </div>

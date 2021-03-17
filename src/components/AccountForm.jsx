@@ -11,6 +11,7 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
   );
   useEffect(() => {
     reset(formValues);
+    document.getElementsByName('identifier')[0].focus();
   }, [formValues]);
   let assingAccounttype = true;
   let accounttype = '';

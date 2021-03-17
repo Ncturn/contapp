@@ -17,9 +17,6 @@ const Policy = ({ history }) => {
     const responseObject = await response.json();
     setPolicies(responseObject);
   };
-  useEffect(() => {
-    getPolicies();
-  }, []);
   const deletePolicy = async (identifier) => {
     const response = await fetch('http://localhost:3000/policy/', {
       method: 'DELETE',
@@ -60,6 +57,19 @@ const Policy = ({ history }) => {
     });
     return policiesRefact;
   };
+  const createHotKeyPlusIcon = (event) => {
+    if (event.key === '+') {
+      event.preventDefault();
+      handlePlusClick();
+    }
+  };
+  useEffect(() => {
+    getPolicies();
+    window.addEventListener('keydown', createHotKeyPlusIcon);
+    return () => {
+      window.removeEventListener('keydown', createHotKeyPlusIcon);
+    };
+  }, []);
   return (
     <Table title={title} items={removeDateTime()} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
   );

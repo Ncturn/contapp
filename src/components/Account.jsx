@@ -21,9 +21,6 @@ const Account = ({ history }) => {
     const responseObject = await response.json();
     setAccounts(responseObject);
   };
-  useEffect(() => {
-    getAccounts();
-  }, []);
   const deleteAccount = async (identifier) => {
     const response = await fetch('http://localhost:3000/account/', {
       method: 'DELETE',
@@ -54,6 +51,19 @@ const Account = ({ history }) => {
   const handlePlusClick = () => {
     history.push('/account/create/');
   };
+  const createHotKeyPlusIcon = (event) => {
+    if (event.key === '+') {
+      event.preventDefault();
+      handlePlusClick();
+    }
+  };
+  useEffect(() => {
+    getAccounts();
+    window.addEventListener('keydown', createHotKeyPlusIcon);
+    return () => {
+      window.removeEventListener('keydown', createHotKeyPlusIcon);
+    };
+  }, []);
   return (
     <Table title={title} items={accounts.body} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
   );
