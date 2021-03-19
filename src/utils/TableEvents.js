@@ -4,7 +4,7 @@ const handleTrashClick = (identifier, deleteItem) => {
     deleteItem(identifier);
   }
 };
-const handlePencilClick = (history, identifier) => {
+const handlePencilClick = (history, collection, identifier) => {
   history.push(`/${collection}/edit/${identifier}`);
 };
 const handlePlusClick = (history, collection) => {
@@ -17,17 +17,10 @@ const handleFilterChange = (event, getCollection) => {
     getCollection(event.target.value);
   }, 1000);
 };
-const createHotKeyPlusIcon = (event) => {
-  if (event.key === '+') {
-    event.preventDefault();
-    handlePlusClick();
-  }
-};
 
 export {
   handleTrashClick,
   handlePencilClick,
   handlePlusClick,
   handleFilterChange,
-  createHotKeyPlusIcon,
 };
