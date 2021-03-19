@@ -16,8 +16,12 @@ const Account = ({ history }) => {
     'balance',
     'tipo de cuenta',
   ];
-  const getAccounts = async () => {
-    const response = await fetch('http://localhost:3000/account/');
+  const getAccounts = async (identifier) => {
+    let parameter = '';
+    if (identifier) {
+      parameter = `?identifier=${identifier}`;
+    }
+    const response = await fetch(`http://localhost:3000/account${parameter}`);
     const responseObject = await response.json();
     setAccounts(responseObject);
   };
@@ -65,7 +69,7 @@ const Account = ({ history }) => {
     };
   }, []);
   return (
-    <Table title={title} items={accounts.body} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
+    <Table title={title} items={accounts.body} getCollection={getAccounts} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
   );
 };
 
