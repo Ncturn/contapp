@@ -4,7 +4,7 @@ import TableRow from './TableRow';
 import { handleFilterChange } from '../utils/TableEvents';
 import '../assets/styles/components/AccountTable.scss';
 
-const Table = ({ title, items, fields, getCollection, handleTrashClick, handlePencilClick, handlePlusClick }) => {
+const Table = ({ title, items, fields, getCollection, deleteItem, handlePencilClick, handlePlusClick }) => {
   return (
     <div>
       <div className='table-title'>
@@ -20,7 +20,7 @@ const Table = ({ title, items, fields, getCollection, handleTrashClick, handlePe
             }
           </tr>
           {
-            items.map((item) => <TableRow key={item.identifier} itemData={item} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} />)
+            items.map((item) => <TableRow key={item.identifier} itemData={item} deleteItem={deleteItem} handlePencilClick={handlePencilClick} />)
           }
         </tbody>
       </table>

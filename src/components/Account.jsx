@@ -43,12 +43,6 @@ const Account = ({ history }) => {
       alert(responseObject.error);
     }
   };
-  const handleTrashClick = (identifier) => {
-    const confirmDelete = window.confirm(`¿Desea borrar la cuenta ${identifier}?`);
-    if (confirmDelete) {
-      deleteAccount(identifier);
-    }
-  };
   const handlePencilClick = (identifier) => {
     history.push(`/account/edit/${identifier}`);
   };
@@ -69,7 +63,7 @@ const Account = ({ history }) => {
     };
   }, []);
   return (
-    <Table title={title} items={accounts.body} getCollection={getAccounts} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
+    <Table title={title} items={accounts.body} getCollection={getAccounts} fields={policyFields} deleteItem={deleteAccount} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
   );
 };
 
