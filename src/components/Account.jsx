@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from './Table';
+import { handlePlusClick } from '../utils/TableEvents';
 
 const Account = ({ history }) => {
   const [accounts, setAccounts] = useState({
@@ -7,6 +8,7 @@ const Account = ({ history }) => {
     body: [],
   });
   const title = 'Cuentas';
+  const collection = 'account';
   const policyFields = [
     'identificador',
     'nombre de la cuenta',
@@ -43,16 +45,10 @@ const Account = ({ history }) => {
       alert(responseObject.error);
     }
   };
-  const handlePencilClick = (identifier) => {
-    history.push(`/account/edit/${identifier}`);
-  };
-  const handlePlusClick = () => {
-    history.push('/account/create/');
-  };
   const createHotKeyPlusIcon = (event) => {
     if (event.key === '+') {
       event.preventDefault();
-      handlePlusClick();
+      handlePlusClick(history, collection);
     }
   };
   useEffect(() => {
@@ -63,7 +59,7 @@ const Account = ({ history }) => {
     };
   }, []);
   return (
-    <Table title={title} items={accounts.body} getCollection={getAccounts} fields={policyFields} deleteItem={deleteAccount} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
+    <Table title={title} collection={collection} items={accounts.body} getCollection={getAccounts} fields={policyFields} deleteItem={deleteAccount} history={history} />
   );
 };
 
