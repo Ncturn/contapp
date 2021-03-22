@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Table from './Table';
+import { handlePlusClick } from '../utils/TableEvents';
 
 const Policy = ({ history }) => {
   const [policies, setPolicies] = useState({
@@ -7,13 +8,18 @@ const Policy = ({ history }) => {
     body: [],
   });
   const title = 'Pólizas';
+  const collection = 'policy';
   const policyFields = [
     'identificador',
     'fecha',
     '# movimientos',
   ];
-  const getPolicies = async () => {
-    const response = await fetch('http://localhost:3000/policy/');
+  const getPolicies = async (identifier) => {
+    let parameter = '';
+    if (identifier) {
+      parameter = `?identifier=${identifier}`;
+    }
+    const response = await fetch(`http://localhost:3000/policy${parameter}`);
     const responseObject = await response.json();
     setPolicies(responseObject);
   };
@@ -35,18 +41,6 @@ const Policy = ({ history }) => {
       alert(responseObject.error);
     }
   };
-  const handleTrashClick = (identifier) => {
-    const confirmDelete = window.confirm(`¿Desea borrar la poliza ${identifier}?`);
-    if (confirmDelete) {
-      deletePolicy(identifier);
-    }
-  };
-  const handlePencilClick = (identifier) => {
-    history.push(`/policy/edit/${identifier}`);
-  };
-  const handlePlusClick = () => {
-    history.push('/policy/create/');
-  };
   const removeDateTime = () => {
     const policiesRefact = [];
     policies.body.forEach((policy) => {
@@ -60,7 +54,7 @@ const Policy = ({ history }) => {
   const createHotKeyPlusIcon = (event) => {
     if (event.key === '+') {
       event.preventDefault();
-      handlePlusClick();
+      handlePlusClick(history, collection);
     }
   };
   useEffect(() => {
@@ -71,7 +65,7 @@ const Policy = ({ history }) => {
     };
   }, []);
   return (
-    <Table title={title} items={removeDateTime()} fields={policyFields} handleTrashClick={handleTrashClick} handlePencilClick={handlePencilClick} handlePlusClick={handlePlusClick} />
+    <Table title={title} items={removeDateTime()} collection={collection} fields={policyFields} getCollection={getPolicies} deleteItem={deletePolicy} history={history} />
   );
 };
 
