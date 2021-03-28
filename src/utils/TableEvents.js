@@ -11,10 +11,10 @@ const handlePlusClick = (history, collection) => {
   history.push(`/${collection}/create/`);
 };
 let filterTimeout = null;
-const handleFilterChange = (event, getCollection) => {
+const handleFilterChange = (event, updateState) => {
   clearTimeout(filterTimeout);
   filterTimeout = setTimeout(async () => {
-    getCollection(event.target.value);
+    updateState(event.target.value);
   }, 1000);
 };
 
