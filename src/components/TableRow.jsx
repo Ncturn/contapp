@@ -2,7 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { handleTrashClick, handlePencilClick } from '../utils/TableEvents';
 
-const TableRow = ({ collection, itemData, deleteItem, history }) => {
+const TableRow = ({ collection, itemData, removeRow, history }) => {
   const { identifier } = itemData;
   const values = Object.values(itemData);
   values.splice(values.length - 1, 1);
@@ -14,7 +14,7 @@ const TableRow = ({ collection, itemData, deleteItem, history }) => {
           {value}
           <div className='row-buttons'>
             <FontAwesomeIcon onClick={() => handlePencilClick(history, collection, identifier)} icon='pencil-alt' />
-            <FontAwesomeIcon onClick={() => handleTrashClick(identifier, deleteItem)} icon='trash-alt' />
+            <FontAwesomeIcon onClick={() => handleTrashClick(identifier, removeRow)} icon='trash-alt' />
           </div>
         </td>
       );
