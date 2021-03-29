@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PolicyForm from '../components/PolicyForm';
+import { getCollection } from '../utils/CollectionApi';
 
 const EditPolicy = ({ history, match }) => {
   const [policy, setPolicy] = useState({
@@ -41,8 +42,7 @@ const EditPolicy = ({ history, match }) => {
     return indexes;
   };
   useEffect(async () => {
-    const response = await fetch(`http://localhost:3000/policy/?identifier=${match.params.identifier}`);
-    const data = await response.json();
+    const data = await getCollection('policy', match.params.identifier);
     const refactPolicy = getRefactorPolicy(data.body[0]);
     setPolicy(refactPolicy);
   }, []);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AccountForm from '../components/AccountForm';
+import { getCollection } from '../utils/CollectionApi';
 
 const EditAccount = ({ match, history }) => {
   const title = 'Editar cuenta';
@@ -12,13 +13,11 @@ const EditAccount = ({ match, history }) => {
     balance: '',
   });
   useEffect(async () => {
-    const response = await fetch(`http://localhost:3000/account/?identifier=${match.params.identifier}`);
-    const responseObject = await response.json();
+    const data = await getCollection('account', match.params.identifier);
     setAccount({
-      ...responseObject.body[0],
+      ...data.body[0],
     });
   }, []);
-  console.log(account);
   return (
     <AccountForm title={title} httpMethod='PATCH' formValues={account} history={history} successMessage='Cambios guardados' readOnly={true} />
   );
