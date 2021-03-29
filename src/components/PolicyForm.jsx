@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ErrorMessage } from '@hookform/error-message';
 import PolicyFormRow from './PolicyFormRow';
+import { getCollection, createItem } from '../utils/CollectionApi';
 import '../assets/styles/components/PolicyForm.scss';
 
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
@@ -26,22 +27,14 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
   const totalAmountsAreEqual = () => {
     return payments === charges;
   };
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onSubmit = async (formData) => {
     if (totalAmountsAreEqual()) {
-      const response = await fetch('http://localhost:3000/policy/', {
-        method: httpMethod,
-        headers: {
-          'content-type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-      const responseObject = await response.json();
-      if (!responseObject.error) {
+      const data = await createItem('policy', httpMethod, formData);
+      if (!data.error) {
         alert(successMessage);
         history.push('/policy');
       } else {
-        alert(responseObject.error);
+        alert(data.error);
       }
     } else {
       alert('Los cargos y abonos no son equivalentes');
@@ -75,12 +68,11 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     }
   };
   const getAccountName = async (accountId, accountNameInput) => {
-    const response = await fetch(`http://localhost:3000/account/?identifier=${accountId}`);
-    const responseObject = await response.json();
-    if (responseObject.body.length > 0) {
-      setValue(accountNameInput, responseObject.body[0].description);
+    const data = await getCollection('account', accountId);
+    if (data.body.length > 0) {
+      setValue(accountNameInput, data.body[0].description);
       const accountInput = accountNameInput.replace('accountName', 'account');
-      setValue(accountInput, responseObject.body[0]._id);
+      setValue(accountInput, data.body[0]._id);
     } else {
       setValue(accountNameInput, '');
       alert('Identificador de cuenta no encontrado');

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import '../assets/styles/components/AccountForm.scss';
 import { useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
+import { createItem } from '../utils/CollectionApi';
 
 const AccountForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false }) => {
   const { register, handleSubmit, errors, reset } = useForm(
@@ -15,24 +16,17 @@ const AccountForm = ({ title, httpMethod, formValues, history, successMessage, r
   }, [formValues]);
   let assingAccounttype = true;
   let accounttype = '';
-  const onSubmit = async (data) => {
+  const onSubmit = async (formData) => {
     const account = {
-      ...data,
+      ...formData,
       accounttype,
     };
-    const response = await fetch('http://localhost:3000/account/', {
-      method: httpMethod,
-      headers: {
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify(account),
-    });
-    const responseObject = await response.json();
-    if (!responseObject.error) {
+    const data = await createItem('account', httpMethod, account);
+    if (!data.error) {
       alert(successMessage);
       history.push('/account');
     } else {
-      alert(responseObject.error);
+      alert(data.error);
     }
   };
   const setAccountType = (number) => {
