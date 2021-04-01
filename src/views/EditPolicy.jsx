@@ -47,7 +47,7 @@ const EditPolicy = ({ history, match }) => {
     setPolicy(refactPolicy);
   }, []);
   return (
-    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' readOnly={true} initialIndex={getIndexArray()} initialCounter={policy.movements.length} initialPayments={getAmounts('abono')} initialCharges={getAmounts('cargo')} />
+    <PolicyForm title='Editar Poliza' httpMethod='PATCH' formValues={policy} history={history} successMessage='Cambios guardados' readOnly={true} initialMovements={getIndexArray()} initialPayments={getAmounts('abono')} initialCharges={getAmounts('cargo')} />
   );
 };
 

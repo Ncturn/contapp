@@ -6,9 +6,9 @@ import PolicyFormRow from './PolicyFormRow';
 import { getCollection, createItem } from '../utils/CollectionApi';
 import '../assets/styles/components/PolicyForm.scss';
 
-const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialIndex = [0], initialCounter = 1, initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
-  const [indexes, setIndexes] = useState(initialIndex);
-  const [counter, setCounter] = useState(initialCounter);
+const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialMovements = [0], initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
+
+  const [movements, setMovements] = useState(initialMovements);
   const [payments, setpayments] = useState(0);
   const [charges, setcharges] = useState(0);
   const { register, handleSubmit, errors, reset, setValue, getValues } = useForm(
@@ -60,9 +60,9 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     return false;
   };
   const handleKeyDown = (event) => {
-    if (event.key === 'Tab' && event.target.value === '' && counter > 1) {
+    if (event.key === 'Tab' && event.target.value === '' && movements.length > 1) {
       const inputName = event.target.name;
-      const lastElementName = inputName.replace(counter - 1, (counter - 2));
+      const lastElementName = inputName.replace(movements.length - 1, (movements.length - 2));
       const lastElementValue = document.getElementsByName(lastElementName)[0].value;
       setValue(inputName, lastElementValue);
     }
@@ -143,23 +143,20 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     validateTypeValue(typeValue, amountName);
   };
   const addMovement = () => {
-    setIndexes((prevIndexes) => [...prevIndexes, counter]);
-    setCounter((prevCounter) => prevCounter + 1);
+    setMovements((prevIndexes) => [...prevIndexes, movements.length]);
   };
   const removeMovement = () => {
-    setIndexes((prevIndexes) => {
-      prevIndexes.pop();
-      return prevIndexes;
-    });
-    setCounter((prevCounter) => prevCounter - 1);
-    const amountName = `movements[${counter - 1}].amount`;
+    const movementsPop = [...movements];
+    movementsPop.pop();
+    setMovements(movementsPop);
+    const amountName = `movements[${movements.length - 1}].amount`;
     removeTotalAmountRef(amountName, 'payments');
     removeTotalAmountRef(amountName, 'charges');
     calculateTotal('payments');
     calculateTotal('charges');
   };
   const handleMinusClick = () => {
-    const confirmDelete = window.confirm(`¿Desea borrar la fila #${counter}?`);
+    const confirmDelete = window.confirm(`¿Desea borrar la fila #${movements.length}?`);
     if (confirmDelete) {
       removeMovement();
     }
@@ -178,8 +175,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
   };
   useEffect(() => {
     reset(formValues);
-    setIndexes(initialIndex);
-    setCounter(initialCounter);
+    setMovements(initialMovements);
     setInitialAmounts();
     document.getElementsByName('identifier')[0].focus();
     window.addEventListener('keydown', createHotKeyPlusIcon);
@@ -235,7 +231,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
             Tipo
           </p>
         </div>
-        {indexes.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} handleBlur={handleBlur} handleAmountsChange={handleAmountsChange} handleTypesChange={handleTypesChange} />)}
+        {movements.map((index) => <PolicyFormRow fieldName={`movements[${index}]`} key={`movement[${index}]`} index={index} register={register} errors={errors} handleKeyDown={handleKeyDown} handleBlur={handleBlur} handleAmountsChange={handleAmountsChange} handleTypesChange={handleTypesChange} />)}
         <button type='submit'>Guardar</button>
       </form>
       <div className='policyFooter'>
