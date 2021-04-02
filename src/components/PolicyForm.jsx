@@ -9,23 +9,15 @@ import '../assets/styles/components/PolicyForm.scss';
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialMovements = [0], initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
 
   const [movements, setMovements] = useState(initialMovements);
-  const [payments, setpayments] = useState(0);
-  const [charges, setcharges] = useState(0);
+  const [payments, setPayments] = useState(initialPayments);
+  const [charges, setCharges] = useState(initialCharges);
   const { register, handleSubmit, errors, reset, setValue, getValues } = useForm(
     {
       defaultValues: formValues,
     },
   );
-  const setInitialAmounts = () => {
-    const totalCharges = document.getElementsByName('charges')[0];
-    totalCharges.amounts = initialCharges.names;
-    const totalPayments = document.getElementsByName('payments')[0];
-    totalPayments.amounts = initialPayments.names;
-    setpayments(initialPayments.value);
-    setcharges(initialCharges.value);
-  };
   const totalAmountsAreEqual = () => {
-    return payments === charges;
+    return payments.value === charges.value;
   };
   const onSubmit = async (formData) => {
     if (totalAmountsAreEqual()) {
@@ -85,36 +77,59 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
       getAccountName(accountIdValue, accountNameInput);
     }
   };
-  const calculateTotal = (totalAmountName) => {
-    const totalAmount = document.getElementsByName(totalAmountName)[0];
+  const calculateTotal = (names) => {
     let value = 0;
-    totalAmount.amounts.forEach((amountName) => {
+    names.forEach((amountName) => {
       value += getValues(amountName);
     });
-    if (totalAmountName === 'payments') {
-      setpayments(value);
+    return value;
+  };
+  const addTotalAmountRef = (amountName, amount) => {
+    if (amount === 'payments') {
+      const paymentsNames = [...payments.names];
+      if (paymentsNames.indexOf(amountName) === -1) {
+        paymentsNames.push(amountName);
+      }
+      const value = calculateTotal(paymentsNames);
+      setPayments({
+        names: paymentsNames,
+        value,
+      });
     } else {
-      setcharges(value);
+      const chargesNames = [...charges.names];
+      if (chargesNames.indexOf(amountName) === -1) {
+        chargesNames.push(amountName);
+      }
+      const value = calculateTotal(chargesNames);
+      setCharges({
+        names: chargesNames,
+        value,
+      });
     }
   };
-  const addTotalAmountRef = (amountName, totalAmountName) => {
-    const totalAmount = document.getElementsByName(totalAmountName)[0];
-    if (!totalAmount.amounts) {
-      totalAmount.amounts = [];
-    }
-    const amountIndex = totalAmount.amounts.indexOf(amountName);
-    if (amountIndex === -1) {
-      totalAmount.amounts.push(amountName);
-    }
-  };
-  const removeTotalAmountRef = (amountName, totalAmountName) => {
-    const totalAmount = document.getElementsByName(totalAmountName)[0];
-    if (!totalAmount.amounts) {
-      totalAmount.amounts = [];
-    }
-    const amountIndex = totalAmount.amounts.indexOf(amountName);
-    if (amountIndex > -1) {
-      totalAmount.amounts.splice(amountIndex, 1);
+  const removeTotalAmountRef = (amountName, amount) => {
+    if (amount === 'payments') {
+      const paymentsNames = [...payments.names];
+      const amountIndex = paymentsNames.indexOf(amountName);
+      if (amountIndex > -1) {
+        paymentsNames.splice(amountIndex, 1);
+      }
+      const value = calculateTotal(paymentsNames);
+      setPayments({
+        names: paymentsNames,
+        value,
+      });
+    } else {
+      const chargesNames = [...charges.names];
+      const amountIndex = chargesNames.indexOf(amountName);
+      if (amountIndex > -1) {
+        chargesNames.splice(amountIndex, 1);
+      }
+      const value = calculateTotal(chargesNames);
+      setCharges({
+        names: chargesNames,
+        value,
+      });
     }
   };
   const validateTypeValue = (typeValue, amountName) => {
@@ -126,8 +141,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
         addTotalAmountRef(amountName, 'charges');
         removeTotalAmountRef(amountName, 'payments');
       }
-      calculateTotal('payments');
-      calculateTotal('charges');
     }
   };
   const handleAmountsChange = (event) => {
@@ -152,8 +165,6 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     const amountName = `movements[${movements.length - 1}].amount`;
     removeTotalAmountRef(amountName, 'payments');
     removeTotalAmountRef(amountName, 'charges');
-    calculateTotal('payments');
-    calculateTotal('charges');
   };
   const handleMinusClick = () => {
     const confirmDelete = window.confirm(`¿Desea borrar la fila #${movements.length}?`);
@@ -176,7 +187,8 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
   useEffect(() => {
     reset(formValues);
     setMovements(initialMovements);
-    setInitialAmounts();
+    setPayments(initialPayments);
+    setCharges(initialCharges);
     document.getElementsByName('identifier')[0].focus();
     window.addEventListener('keydown', createHotKeyPlusIcon);
     window.addEventListener('keydown', createHotKeyMinusIcon);
@@ -239,13 +251,13 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
           <label htmlFor='charges'>
             Cargos
             <div>
-              <input name='charges' type='number' value={charges} readOnly />
+              <input name='charges' type='number' value={charges.value} readOnly />
             </div>
           </label>
           <label htmlFor='payments'>
             Abonos
             <div>
-              <input name='payments' type='number' value={payments} readOnly />
+              <input name='payments' type='number' value={payments.value} readOnly />
             </div>
           </label>
         </div>
