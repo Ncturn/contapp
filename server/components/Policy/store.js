@@ -63,9 +63,17 @@ const edit = async (updatedPolicy) => {
   };
 };
 
+const balance = async (accountId) => {
+  const policies = await Model.find({
+    'movements.account': accountId,
+  }, 'movements');
+  return policies;
+};
+
 module.exports = {
   find,
   save,
   remove,
   edit,
+  balance,
 };
