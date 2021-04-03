@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { getCollection, createItem } from '../utils/CollectionApi';
 import PolicyFormPresentational from './PolicyFormPresentational';
@@ -7,6 +7,11 @@ import '../assets/styles/components/PolicyForm.scss';
 const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, readOnly = false, initialMovements = [0], initialPayments = { names: [], value: 0 }, initialCharges = { names: [], value: 0 } }) => {
 
   const [movements, setMovements] = useState(initialMovements);
+  const movementsRef = useRef(movements);
+  const setMovementsRef = (state) => {
+    movementsRef.current = state;
+    setMovements(state);
+  };
   const [payments, setPayments] = useState(initialPayments);
   const [charges, setCharges] = useState(initialCharges);
   const { register, handleSubmit, errors, reset, setValue, getValues } = useForm(
@@ -31,9 +36,9 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     }
   };
   const handleKeyDown = (event) => {
-    if (event.key === 'Tab' && event.target.value === '' && movements.length > 1) {
+    if (event.key === 'Tab' && event.target.value === '' && movementsRef.current.length > 1) {
       const inputName = event.target.name;
-      const lastElementName = inputName.replace(movements.length - 1, (movements.length - 2));
+      const lastElementName = inputName.replace(movementsRef.current.length - 1, (movementsRef.current.length - 2));
       const lastElementValue = document.getElementsByName(lastElementName)[0].value;
       setValue(inputName, lastElementValue);
     }
@@ -135,18 +140,18 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     validateTypeValue(typeValue, amountName);
   };
   const addMovement = () => {
-    setMovements((prevIndexes) => [...prevIndexes, movements.length]);
+    setMovementsRef([...movementsRef.current, movementsRef.current.length]);
   };
   const removeMovement = () => {
-    const movementsPop = [...movements];
+    const movementsPop = [...movementsRef.current];
     movementsPop.pop();
-    setMovements(movementsPop);
-    const amountName = `movements[${movements.length - 1}].amount`;
+    setMovementsRef(movementsPop);
+    const amountName = `movements[${movementsRef.current.length - 1}].amount`;
     removeTotalAmountRef(amountName, 'payments');
     removeTotalAmountRef(amountName, 'charges');
   };
   const handleMinusClick = () => {
-    const confirmDelete = window.confirm(`¿Desea borrar la fila #${movements.length}?`);
+    const confirmDelete = window.confirm(`¿Desea borrar la fila #${movementsRef.current.length}?`);
     if (confirmDelete) {
       removeMovement();
     }
@@ -165,7 +170,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
   };
   useEffect(() => {
     reset(formValues);
-    setMovements(initialMovements);
+    setMovementsRef(initialMovements);
     setPayments(initialPayments);
     setCharges(initialCharges);
     document.getElementsByName('identifier')[0].focus();
