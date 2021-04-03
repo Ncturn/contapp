@@ -65,9 +65,29 @@ const editPolicy = async (policy) => {
   return response;
 };
 
+const getBalance = async (accountId) => {
+  const idValidator = new Validator({
+    accountId,
+  }, {
+    'accountId': 'required|mongoId',
+  });
+  const matched = await idValidator.check();
+  if (matched) {
+    const policies = await store.balance(accountId);
+    return {
+      code: 200,
+      body: policies,
+      error: null,
+    };
+  }
+  const response = errorResponse(idValidator.errors);
+  return response;
+};
+
 module.exports = {
   getPolicy,
   createPolicy,
   removePolicy,
   editPolicy,
+  getBalance,
 };
