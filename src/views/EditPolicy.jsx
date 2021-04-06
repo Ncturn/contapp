@@ -42,7 +42,7 @@ const EditPolicy = ({ history, match }) => {
     return indexes;
   };
   useEffect(async () => {
-    const data = await getCollection('policy', match.params.identifier);
+    const data = await getCollection('policy', `?identifier=${match.params.identifier}`);
     const refactPolicy = getRefactorPolicy(data.body[0]);
     setPolicy(refactPolicy);
   }, []);

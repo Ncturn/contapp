@@ -1,8 +1,4 @@
-const getCollection = async (collection, identifier) => {
-  let parameter = '';
-  if (identifier) {
-    parameter = `?identifier=${identifier}`;
-  }
+const getCollection = async (collection, parameter = '') => {
   const response = await fetch(`http://localhost:3000/${collection}${parameter}`);
   const data = await response.json();
   return data;

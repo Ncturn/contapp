@@ -13,7 +13,7 @@ const EditAccount = ({ match, history }) => {
     balance: '',
   });
   useEffect(async () => {
-    const data = await getCollection('account', match.params.identifier);
+    const data = await getCollection('account', `?identifier=${match.params.identifier}`);
     setAccount({
       ...data.body[0],
     });
