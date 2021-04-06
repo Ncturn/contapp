@@ -1,9 +1,26 @@
 const Model = require('./model');
 const { policyExists } = require('../../utils/commonQueries');
 
+const getDateFilteredPolicies = (policies) => {
+  const dateFilteredPolicies = [];
+  for (let index = 0; index < policies.length; index++) {
+    const date = policies[index].date.toJSON();
+    const policy = {
+      _id: policies[index]._id,
+      identifier: policies[index].identifier,
+      date: date.split('T')[0],
+      movements: policies[index].movements,
+      __v: policies[index].__v,
+    };
+    dateFilteredPolicies.push(policy);
+  }
+  return dateFilteredPolicies;
+};
+
 const find = async (filter) => {
   const policies = await Model.find(filter).populate('movements.account');
-  return policies;
+  const dateFilteredPolicies = getDateFilteredPolicies(policies);
+  return dateFilteredPolicies;
 };
 
 const save = async (policy) => {
@@ -63,9 +80,18 @@ const edit = async (updatedPolicy) => {
   };
 };
 
+const balance = async (accountId) => {
+  const policies = await Model.find({
+    'movements.account': accountId,
+  });
+  const dateFilteredPolicies = getDateFilteredPolicies(policies);
+  return dateFilteredPolicies;
+};
+
 module.exports = {
   find,
   save,
   remove,
   edit,
+  balance,
 };
