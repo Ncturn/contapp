@@ -1,6 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const BalanceTable = ({ account, policies, handleIdentifierChange }) => {
+  const [payments, setPayments] = useState(0);
+  const [charges, setCharges] = useState(0);
+  const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    let pay = 0;
+    let char = 0;
+    const tableRows = policies.map((policy) => {
+      return policy.movements.map((movement) => {
+        if (account._id === movement.account) {
+          if (movement.type === 'cargo') {
+            char += parseFloat(movement.amount);
+          } else {
+            pay += parseFloat(movement.amount);
+          }
+          return (
+            <tr key={`${policy.identifier}`}>
+              <td>{ policy.identifier }</td>
+              <td>{ policy.date }</td>
+              <td>{ movement.concept }</td>
+              <td>{ movement.type === 'cargo' && movement.amount }</td>
+              <td>{ movement.type === 'abono' && movement.amount }</td>
+            </tr>
+          );
+        }
+        return false;
+      });
+    });
+    setRows(tableRows);
+    setCharges(char);
+    setPayments(pay);
+  }, [policies]);
+
   return (
     <div>
       <div className='table-title'>
@@ -23,24 +56,14 @@ const BalanceTable = ({ account, policies, handleIdentifierChange }) => {
             <th>Cargos</th>
             <th>Abonos</th>
           </tr>
-          {
-            policies.length > 0 && policies.map((policy) => {
-              return policy.movements.map((movement) => {
-                if (account._id === movement.account) {
-                  return (
-                    <tr key={`${policy.identifier}`}>
-                      <td>{ policy.identifier }</td>
-                      <td>{ policy.date }</td>
-                      <td>{ movement.concept }</td>
-                      <td>{ movement.type === 'cargo' && movement.amount }</td>
-                      <td>{ movement.type === 'abono' && movement.amount }</td>
-                    </tr>
-                  );
-                }
-                return false;
-              });
-            })
-          }
+          {rows}
+          <tr>
+            <th>Totales</th>
+            <th> </th>
+            <th> </th>
+            <th>{charges}</th>
+            <th>{payments}</th>
+          </tr>
         </tbody>
       </table>
     </div>
