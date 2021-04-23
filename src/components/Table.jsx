@@ -10,7 +10,7 @@ const Table = ({ title, name, fields, history }) => {
   const [collection, setCollection] = useCollection(name);
 
   const updateTable = async (identifier) => {
-    const data = await getCollection(name, identifier);
+    const data = await getCollection(name, `?identifier=${identifier}`);
     setCollection(data);
   };
 

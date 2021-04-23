@@ -65,15 +65,17 @@ const editPolicy = async (policy) => {
   return response;
 };
 
-const getBalance = async (accountId) => {
+const getBalance = async (accountId, date) => {
   const idValidator = new Validator({
     accountId,
+    date,
   }, {
     'accountId': 'required|mongoId',
+    'date': 'required|date',
   });
   const matched = await idValidator.check();
   if (matched) {
-    const policies = await store.balance(accountId);
+    const policies = await store.balance(accountId, date);
     return {
       code: 200,
       body: policies,

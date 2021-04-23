@@ -44,7 +44,7 @@ const PolicyForm = ({ title, httpMethod, formValues, history, successMessage, re
     }
   };
   const getAccountName = async (accountId, accountNameInput) => {
-    const data = await getCollection('account', accountId);
+    const data = await getCollection('account', `?identifier=${accountId}`);
     if (data.body.length > 0) {
       setValue(accountNameInput, data.body[0].description);
       const accountInput = accountNameInput.replace('accountName', 'account');
