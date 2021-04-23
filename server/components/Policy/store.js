@@ -80,8 +80,15 @@ const edit = async (updatedPolicy) => {
   };
 };
 
-const balance = async (accountId) => {
+const balance = async (accountId, date) => {
+  const gteDate = new Date(date);
+  const ltDate = new Date(date);
+  ltDate.setMonth(gteDate.getMonth() + 1);
   const policies = await Model.find({
+    date: {
+      $gte: gteDate,
+      $lt: ltDate,
+    },
     'movements.account': accountId,
   });
   const dateFilteredPolicies = getDateFilteredPolicies(policies);

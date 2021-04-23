@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   let response;
   if (req.query.accountId) {
-    response = await controller.getBalance(req.query.accountId);
+    response = await controller.getBalance(req.query.accountId, req.query.date);
   } else {
     const filter = req.query.identifier || null;
     response = await controller.getPolicy(filter);
