@@ -21,10 +21,7 @@ const save = async (account) => {
     return {
       code: 404,
       body: null,
-      error: 'No se encontro la llave de control ingresada',
-    };
-  }
-  const accountModel = new Model(account);
+      error: 'No se encontró la llave de control ingresada',
   const accountData = await accountModel.save();
   return {
     code: 201,
@@ -76,7 +73,7 @@ const edit = async (editedAccount) => {
     return {
       code: 404,
       body: null,
-      error: 'No se encontro la llave de control ingresada',
+      error: 'No se encontró la llave de control ingresada',
     };
   }
   const keys = Object.keys(editedAccount);
