@@ -532,7 +532,7 @@ Cuando ocurre un error, la respuesta tiene la siguiente estructura:
 **Llave de control inválida (404):**
 ```json
 {
-  "error": "No se encontro la llave de control ingresada",
+  "error": "No se encontró la llave de control ingresada",
   "body": null
 }
 ```

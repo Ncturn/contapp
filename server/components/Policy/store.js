@@ -47,7 +47,7 @@ const edit = async (updatedPolicy) => {
   if (!policy) {
     return {
       code: 404,
-      error: 'No se encontro la poliza',
+      error: 'No se encontró la póliza',
       body: '',
     };
   }
